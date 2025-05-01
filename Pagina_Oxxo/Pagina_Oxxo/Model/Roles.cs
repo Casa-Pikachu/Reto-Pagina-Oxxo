@@ -6,8 +6,8 @@ namespace Pagina_Oxxo.Model{
         public string descripcion_rol {get;set;}
 
         public Roles(int id_rol_,string descripcion_rol_){
-            this.id_rol = id_rol_;
-            this.descripcion_rol = descripcion_rol_;
+            id_rol = id_rol_;
+            descripcion_rol = descripcion_rol_;
         }
 
         public Roles(){}

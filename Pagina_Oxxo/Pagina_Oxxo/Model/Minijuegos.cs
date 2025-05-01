@@ -6,8 +6,8 @@ namespace Pagina_Oxxo.Model{
         public string nombre_minijuego {get;set;}
 
         public Minijuegos(int id_minijuego_,string nombre_minijuego_){
-            this.id_minijuego = id_minijuego_;
-            this.nombre_minijuego = nombre_minijuego_;
+            id_minijuego = id_minijuego_;
+            nombre_minijuego = nombre_minijuego_;
         }
 
         public Minijuegos(){}
