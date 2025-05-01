@@ -35,4 +35,20 @@ body {
   font-weight: bold;
 }
 
+body {
+  background-color: #fff8dc;
+}
 
+.card-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #DF0024;
+}
+
+.card-body img {
+  margin-bottom: 10px;
+}
+
+.card-body div {
+  text-align: center;
+}
