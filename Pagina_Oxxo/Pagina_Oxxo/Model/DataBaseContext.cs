@@ -7,6 +7,7 @@ namespace Pagina_Oxxo.Model{
         public string ConnectionString {get; set;}
 
         public DataBaseContext(){
+            // DB local Bruno
             ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root";
         }
 
@@ -20,12 +21,12 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
             
-            MySqlCommand cmd = new MySqlCommand("Select * from Usuarios", conexion);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM USUARIOS", conexion);
 
             Usuarios usr1;
             
-            using (var reader = cmd.ExecuteReader()){
-                while (reader.Read()){
+            using(var reader = cmd.ExecuteReader()){
+                while(reader.Read()){
                     usr1 = new Usuarios();
                     
                     usr1.id_usuario = Convert.ToInt32(reader["id_usuario"]);
@@ -34,6 +35,8 @@ namespace Pagina_Oxxo.Model{
                     usr1.correo = reader["correo"].ToString();
                     usr1.contrasena = reader["contrasena"].ToString();
                     usr1.monedas = Convert.ToInt32(reader["monedas"]);
+                    usr1.experiencia = Convert.ToInt32(reader["experiencia"]);
+                    usr1.puntos = Convert.ToInt32(reader["puntos"]);
                     usr1.id_rol = Convert.ToInt32(reader["id_rol"]);
                     usr1.id_tienda = Convert.ToInt32(reader["id_tienda"]);
                     
@@ -43,6 +46,34 @@ namespace Pagina_Oxxo.Model{
 
             conexion.Close();
             return ListaUsuarios;
+        }
+
+        public Usuarios GetUserInfo(string nombre, string apellido){
+            Usuarios user = new Usuarios();
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\"", conexion);
+
+            
+            using(var reader = cmd.ExecuteReader()){
+                if(reader.Read()){
+                    user.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    user.nombre = reader["nombre"].ToString();
+                    user.apellido = reader["apellido"].ToString();
+                    user.correo = reader["correo"].ToString();
+                    user.contrasena = reader["contrasena"].ToString();
+                    user.monedas = Convert.ToInt32(reader["monedas"]);
+                    user.experiencia = Convert.ToInt32(reader["experiencia"]);
+                    user.puntos = Convert.ToInt32(reader["puntos"]);
+                    user.id_rol = Convert.ToInt32(reader["id_rol"]);
+                    user.id_tienda = Convert.ToInt32(reader["id_tienda"]);
+                }
+            }
+
+            conexion.Close();
+            return user;
         }
     }
 }

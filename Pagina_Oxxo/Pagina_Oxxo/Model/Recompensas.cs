@@ -8,10 +8,10 @@ namespace Pagina_Oxxo.Model{
         public int precio_recompensa {get;set;}
 
         public Recompensas(int id_recompensa_,string nombre_recompensa_,string descripcion_recompensa_,int precio_recompensa_){
-            this.id_recompensa = id_recompensa_;
-            this.nombre_recompensa = nombre_recompensa_;
-            this.descripcion_recompensa = descripcion_recompensa_;
-            this.precio_recompensa = precio_recompensa_;
+            id_recompensa = id_recompensa_;
+            nombre_recompensa = nombre_recompensa_;
+            descripcion_recompensa = descripcion_recompensa_;
+            precio_recompensa = precio_recompensa_;
         }
 
         public Recompensas(){}
