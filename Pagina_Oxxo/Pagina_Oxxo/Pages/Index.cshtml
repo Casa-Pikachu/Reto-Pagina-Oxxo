@@ -4,7 +4,70 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="row">
+        @* Podio *@
+        <div class="col-4">
+            <div class="card text-center">
+                <h5 class="card-header">Top 3</h5>
+                <div class="card-body">
+                    @* Se puede hacer una tabla como en la demostracion en clase *@
+                    @* Query para obtener los primeros 3 lugares *@
+
+                    <p>#1 Andrés de la Garza</p>
+                    <p>#2 Martha García</p>
+                    <p>#3 Gonzalo López</p>
+                </div>
+            </div>
+        </div>
+
+        @* Monedas *@
+        <div class="col-4">
+            <div class="card text-center">
+                <h5 class="card-header">Mis monedas</h5>
+                <div class="card-body">
+                    <img src="" alt="Moneda" class="img-fluid" style="width: 50px;">
+                    
+                    @* SELECT monedas FROM usuarios WHERE id_usuario = *id del usuario actual* *@
+                    <h3>20</h3>
+                </div>
+            </div>
+        </div>
+
+        @* Anuncios *@
+        <div class="col-4">
+            <div class="card text-center">
+                <h5 class="card-header">Anuncios</h5>
+                <div class="card-body">
+                    <p><strong>Mauricio</strong></p>
+                    <p>Asesor de tienda</p>
+                    @* Tabla en la BD para anuncios? *@
+                    <p>Hola, Andrés. ¡Felicidades por llegar al puesto #1 en el podio!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Tienda *@
+    <div class="row mt-4">
+        <div class="col-8">
+            <div class="card text-center">
+                <h5 class="card-header">Tienda</h5>
+                <div class="card-body d-flex justify-content-around">
+                    <div>
+                        <img src="" alt="Item 1" class="img-fluid" style="width: 60px;">
+                        <p class="mt-2">$30</p>
+                    </div>
+                    <div>
+                        <img src="" alt="Item 2" class="img-fluid" style="width: 60px;">
+                        <p class="mt-2">$20</p>
+                    </div>
+                    <div>
+                        <img src="" alt="Item 3" class="img-fluid" style="width: 60px;">
+                        <p class="mt-2">$50</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
