@@ -7,7 +7,7 @@
 
 
 <div class="text-center">
-    <h1 class="display-4 text-center">Podio</h1>
+    <h1 class="display-4 text-center">¡Felicidades!</h1>
     
     
 </div>
@@ -18,8 +18,8 @@
   <img class="card-img-top rounded-circle" src="~/imagen/MedallaPlata.png" alt="Card image cap" 
   style="width: 150px; height: 150px; object-fit: cover; margin: 20px auto;"> 
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <h5 class="card-title">@Model.SegundoLugar?.nombre @Model.SegundoLugar?.apellido</h5>
+    <p class="card-text">@Model.SegundoLugar?.puntaje puntos</p>
     
   </div>
   
@@ -27,12 +27,12 @@
 
 <!--<div class="card " style="width: 22rem; text-align: center; "> -->
 
-<div class="card text-white bg-dark mb-3" style="max-width: 24rem;">
+<div class="card text-white bg-dark mb-3" style="width: 24rem; text-align: center;">
   <img class="card-img-top rounded-circle" src="~/imagen/MedallaOro.png" alt="Card image cap" 
   style="width: 150px; height: 150px; object-fit: cover; margin: 20px auto;"> 
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <h5 class="card-title">@Model.PrimerLugar?.nombre @Model.PrimerLugar?.apellido</h5>
+    <p class="card-text">@Model.PrimerLugar?.puntaje puntos</p>
     
   </div>
 </div>
@@ -41,8 +41,8 @@
   <img class="card-img-top rounded-circle" src="~/imagen/MedallaBronce.png" alt="Card image cap" 
   style="width: 150px; height: 150px; object-fit: cover; margin: 20px auto;"> 
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <h5 class="card-title">@Model.TercerLugar?.nombre @Model.TercerLugar?.apellido</h5>
+    <p class="card-text">@Model.TercerLugar?.puntaje puntos</p>
     
   </div>
 </div>
@@ -55,44 +55,37 @@
 
 
 <div class="container mt-5">
-    <h1 class="text-success text-center mb-4">Ganadores de esta semana</del>!</h1>
-
-
+    <h1 class="text-dark text-center mb-4">Ranking</h1>
 
     <div class="card card-Magda p-4">
+        <!--tabla de bootstrap-->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Lugar</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Puntaje</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int lugar = 4;
+                }
 
-        <!-- tabla de bootstrap -->
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Apellido</th>
-      <th scope="col">Puntuación</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-    
+                @foreach (var usuario in Model.ListaUsuarios)
+                {
+                    <tr>
+                        <th scope="row">@lugar</th>
+                        <td>@usuario.nombre</td>
+                        <td>@usuario.apellido</td>
+                        <td>@usuario.puntaje</td>
+                    </tr>
+                    lugar++;
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
         
     </div>
