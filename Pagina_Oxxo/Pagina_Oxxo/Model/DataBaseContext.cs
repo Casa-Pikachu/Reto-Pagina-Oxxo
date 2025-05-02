@@ -77,3 +77,200 @@ namespace Pagina_Oxxo.Model{
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Magda endpoint de la otra actividad que si jalo y me estiy basando para esto
+
+        /*
+
+        // Lugares 4to en adelante 
+    [HttpGet("GetElse")]
+     public List<Usuario> GetElse()
+        {
+            List<Usuario> lista = new List<Usuario>();
+
+            using (MySqlConnection conexion = new MySqlConnection(ConnectionString))
+            {
+                conexion.Open();
+
+                string query = @"
+                    SELECT nombre, apellido, puntaje
+        FROM (
+            SELECT 
+                u.nombre, 
+                u.apellido, 
+                r.puntaje,
+                ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
+            FROM usuarios u
+            JOIN ranking r ON u.id_usuario = r.id_usuario
+        ) AS sub
+        WHERE posicion >= 4;";
+
+                MySqlCommand cmd = new MySqlCommand(query, conexion);
+
+        using (var reader = cmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                Usuario item = new Usuario
+                {
+                    nombre = reader["nombre"].ToString(),
+                    apellido = reader["apellido"].ToString(),
+                    puntaje = Convert.ToInt32(reader["puntaje"])
+                    
+                };
+
+                lista.Add(item);
+            }
+        }
+    }
+
+    return lista;
+}
+sto no me sale todavia sigo editando no mover pliss 
+        */
+
+
+       /* public List<Usuarios> GetElse(){
+            List<Usuarios> PodioUsuarios = new List<Usuarios>();
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            string query = @"
+                    SELECT nombre, apellido, puntaje
+        FROM (
+            SELECT 
+                u.nombre, 
+                u.apellido, 
+                r.puntaje,
+                ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
+            FROM usuarios u
+            JOIN ranking r ON u.id_usuario = r.id_usuario
+        ) AS sub
+        WHERE posicion >= 4;";
+
+
+
+        MySqlCommand cmd = new MySqlCommand(query, conexion);
+
+        using (var reader = cmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+
+                /// esto no me sale todavia sigo editando no mover pliss 
+                Usuario item = new Usuario
+                {
+                    nombre = reader["nombre"].ToString(),
+                    apellido = reader["apellido"].ToString(),
+                    puntaje = Convert.ToInt32(reader["puntaje"])
+                    
+                };
+
+                list.Add(item);
+            }
+        }
+    }
+
+    conexion.Close();
+
+    return lista;
+}
+
+}*/
