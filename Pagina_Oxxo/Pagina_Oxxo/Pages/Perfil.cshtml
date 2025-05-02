@@ -1,7 +1,7 @@
 @page
 @model PerfilModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Perfil";
     int idUsuario = 3;
     var usuario = Model.usuarioLista?.FirstOrDefault(item => item.id_usuario == idUsuario);
     var rank = Model.usuarioRanking?.FirstOrDefault(temp => temp.id_usuario == idUsuario);
