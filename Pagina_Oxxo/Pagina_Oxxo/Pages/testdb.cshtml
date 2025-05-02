@@ -3,10 +3,17 @@
 @{
     ViewData["Title"] = "test";
 
+
+    ///1. 
+
     var usuario = Model.ListaUsuarios.FirstOrDefault(item => item.id_usuario == 1);
 }
 
 <div class="text-center">
+    
+    
+    ///2.
+    
     <form method="post">
         <input type="submit" value="Mostrar usuarios">
     </form>
@@ -29,6 +36,8 @@
             </tr>
         </thead>
         <tbody>
+       
+       //.3
         @foreach (var item in Model.ListaUsuarios)
         {
             <tr>
