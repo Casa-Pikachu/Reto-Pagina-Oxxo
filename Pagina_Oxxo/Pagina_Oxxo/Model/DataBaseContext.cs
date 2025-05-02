@@ -165,8 +165,8 @@ namespace Pagina_Oxxo.Model{
 
             return ListaItems;
         }
-    }
-}
+    //}
+//}
 
 
 
@@ -316,8 +316,8 @@ sto no me sale todavia sigo editando no mover pliss
         */
 
 
-       /* public List<Usuarios> GetElse(){
-            List<Usuarios> PodioUsuarios = new List<Usuarios>();
+        public List<Podios> GetElse(){
+            List<Podios> PodioUsuarios = new List<Podios>();
             
             MySqlConnection conexion = GetConnection();
             conexion.Open();
@@ -332,10 +332,8 @@ sto no me sale todavia sigo editando no mover pliss
                 ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
             FROM usuarios u
             JOIN ranking r ON u.id_usuario = r.id_usuario
-        ) AS sub
+        ) AS sub  
         WHERE posicion >= 4;";
-
-
 
         MySqlCommand cmd = new MySqlCommand(query, conexion);
 
@@ -343,9 +341,8 @@ sto no me sale todavia sigo editando no mover pliss
         {
             while (reader.Read())
             {
-
                 /// esto no me sale todavia sigo editando no mover pliss 
-                Usuario item = new Usuario
+                Podios usrpod = new Podios
                 {
                     nombre = reader["nombre"].ToString(),
                     apellido = reader["apellido"].ToString(),
@@ -353,14 +350,109 @@ sto no me sale todavia sigo editando no mover pliss
                     
                 };
 
-                list.Add(item);
-            }
+                PodioUsuarios.Add(usrpod);
+            
         }
     }
 
     conexion.Close();
 
-    return lista;
+    return PodioUsuarios;
 }
 
+
+
+public Podios LugarMedalla(int posicion){
+            //List<Podios> Lugar1 = new List<Podios>();
+            Podios resultado = null;
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            string query = @"
+                    SELECT nombre, apellido, puntaje
+        FROM (
+            SELECT 
+                u.nombre, 
+                u.apellido, 
+                r.puntaje,
+                ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
+            FROM usuarios u
+            JOIN ranking r ON u.id_usuario = r.id_usuario
+        ) AS sub  
+        WHERE posicion = {posicion};";
+
+        MySqlCommand cmd = new MySqlCommand(query, conexion);
+
+        using (var reader = cmd.ExecuteReader())
+        {
+            if (reader.Read())
+            resultado = new Podios
+            {
+
+                {
+                    nombre = reader["nombre"].ToString(),
+                    apellido = reader["apellido"].ToString(),
+                    puntaje = Convert.ToInt32(reader["puntaje"])
+                    
+                };
+        };
+    }
+
+    conexion.Close();
+
+    return resultado; 
+
+
+ /* 
+ //mejor no lo hagas uno por uno
+ 
+ public List<Podios> Oro(){
+            List<Podios> Lugar1 = new List<Podios>();
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            string query = @"
+                    SELECT nombre, apellido, puntaje
+        FROM (
+            SELECT 
+                u.nombre, 
+                u.apellido, 
+                r.puntaje,
+                ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
+            FROM usuarios u
+            JOIN ranking r ON u.id_usuario = r.id_usuario
+        ) AS sub  
+        WHERE posicion = 1;";
+
+        MySqlCommand cmd = new MySqlCommand(query, conexion);
+
+        using (var reader = cmd.ExecuteReader())
+        {
+            if (reader.Read())
+            {
+                /// esto no me sale todavia sigo editando no mover pliss 
+                Podios usrpod = new Podios
+                {
+                    nombre = reader["nombre"].ToString(),
+                    apellido = reader["apellido"].ToString(),
+                    puntaje = Convert.ToInt32(reader["puntaje"])
+                    
+                };
+
+                Lugar1.Add(usrpod);
+            
+        }
+    }
+
+    conexion.Close();
+
+    return Lugar1;
 }*/
+
+
+
+
+    }
+}
