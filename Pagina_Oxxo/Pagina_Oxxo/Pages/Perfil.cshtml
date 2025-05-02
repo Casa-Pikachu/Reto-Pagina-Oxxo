@@ -3,30 +3,45 @@
 @{
     ViewData["Title"] = "Home page";
     int idUsuario = 3;
-    var usuario = Model.usuarioLista.FirstOrDefault(item => item.id_usuario == idUsuario);
-    var rank = Model.usuarioRanking.FirstOrDefault(temp => temp.id_usuario == idUsuario);
+    var usuario = Model.usuarioLista?.FirstOrDefault(item => item.id_usuario == idUsuario);
+    var rank = Model.usuarioRanking?.FirstOrDefault(temp => temp.id_usuario == idUsuario);
 
 }
 @*Cuadro completo*@
 <div class="center-div">
-    <div class="rounded-5 card bg-secondary bg-opacity-10 py-3"> 
-
+    <div class="container rounded-5 card bg-secondary bg-opacity-10 py-3"> 
+        
+    
         @*Priemra hilera*@
         <div class="row justify-content-center">
-            
+
             @*Imagen*@
             <div class="col-sm-3 align-items-stretch">
                 <div class="card bg-secondary bg-opacity-10 mx-2 my-4 rounded-5 p-3">
-                    <img src="~/imagen/.png" alt="">
+                    <div style="padding:10px;" class="text-center">
+                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" class="mb-3 rounded-3 shadow-sm"/>
+
+                        @* Se mandan los datos de la imagen deseada*@
+                        <form method="post">
+                            <div class="mb-2">
+                                <select asp-for="fotoP" class="form-select form-select-sm w-100 rounded-3 shadow-sm">
+                                     <option value="MedallaOro.png">Perfil 1</option>
+                                     <option value="MedallaBronce.png">Perfil 2</option>
+                                     <option value="MedallaPlata.png">Perfil 3</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-light btn-sm w-100 rounded-3 shadow-sm" type="submit">Cambiar imagen</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
+            
             @*Nombre*@
-            <div class="col-sm-8 align-items-stretch">
-                <div class="card bg-secondary bg-opacity-10 my-4 mx-2 rounded-4" >
+            <div class="col-sm-5 align-items-stretch">
+                <div class="card bg-secondary bg-opacity-10 my-4 mx-2 rounded-4">
                     <div class="card-body">
                         <h1 class="card-title p-3"><b>Nombre:</b> @Html.DisplayFor(item => usuario.nombre) @Html.DisplayFor(item => usuario.apellido)<h1>
-                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Html.DisplayFor(temp => rank.fecha_puntaje)</h5          
+                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Html.DisplayFor(temp => rank.fecha_puntaje)</h5>          
                     </div>
                 </div>    
             </div>                 
