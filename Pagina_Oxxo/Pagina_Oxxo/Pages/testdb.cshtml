@@ -2,6 +2,8 @@
 @model testdbModel
 @{
     ViewData["Title"] = "test";
+
+    var usuario = Model.ListaUsuarios.FirstOrDefault(item => item.id_usuario == 1);
 }
 
 <div class="text-center">
