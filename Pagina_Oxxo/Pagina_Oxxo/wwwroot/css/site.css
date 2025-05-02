@@ -52,3 +52,14 @@ body {
 .card-body div {
   text-align: center;
 }
+
+.scrollable-div {
+  max-height: 290px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc; 
+}
+
+.card {
+  height: 100%;
+}
