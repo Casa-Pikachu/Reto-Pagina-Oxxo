@@ -52,3 +52,20 @@ body {
 .card-body div {
   text-align: center;
 }
+
+.color-header{
+  color: #DF0024;
+}
+
+.color-text{
+  color:#F6D300;
+  -webkit-text-stroke: 1px black;
+
+}
+
+.center-div{
+  height: 75vh;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+}
