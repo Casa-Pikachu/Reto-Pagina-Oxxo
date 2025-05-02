@@ -6,6 +6,11 @@ namespace Pagina_Oxxo.Pages;
 
 public class PerfilModel : PageModel
 {
+     [BindProperty] //Conexión entre base de datos
+    public string fotoP { get; set;} 
+    [BindProperty]
+    public string camino { get; set; }
+
 
     private readonly DataBaseContext _context;
     public List<Usuarios> usuarioLista { get; set;} 
@@ -19,9 +24,21 @@ public class PerfilModel : PageModel
 
     public void OnGet() 
     { 
+        //Conexión a base de datos
         usuarioLista = _context.GetAllUsers();
         usuarioRanking = _context.GetRanking();
 
+        camino = "~/imagen/Oxxo.png";
+    }
+
+    public void OnPost()
+    {
+        //Se vuelven a cargar los datos al hacer post
+        usuarioLista = _context.GetAllUsers();
+        usuarioRanking = _context.GetRanking();
+
+        //se enlaza el camino para llegar a la imagen y su nombre
+        camino = $"~/imagen/{fotoP}";
     }
 }
 
