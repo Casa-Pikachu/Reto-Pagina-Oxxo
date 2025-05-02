@@ -16,29 +16,28 @@
         <div class="row justify-content-center">
 
             @*Imagen*@
-            <div class="col-sm-3 align-items-stretch">
-                <div class="card bg-secondary bg-opacity-10 mx-2 my-4 rounded-5 p-3">
-                    <div style="padding:10px;" class="text-center">
-                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" class="mb-3 rounded-3 shadow-sm"/>
-
+            <div class="col-sm-3">
+                <div class="mx-2 rounded-5 p-4">
+                    <div class="text-center p-1 justify-content-center">
+                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" height="150px" class="mb-3 rounded-3 shadow-sm border border-dark"/>
+                    </div>
                         @* Se mandan los datos de la imagen deseada*@
                         <form method="post">
-                            <div class="mb-2">
-                                <select asp-for="fotoP" class="form-select form-select-sm w-100 rounded-3 shadow-sm">
+                            <div class="d-flex justify-content-center">
+                                <select asp-for="fotoP" class="form-select form-select-sm w-auto rounded-3 shadow-sm mx-2 border border-dark">
                                      <option value="MedallaOro.png">Perfil 1</option>
                                      <option value="MedallaBronce.png">Perfil 2</option>
                                      <option value="MedallaPlata.png">Perfil 3</option>
                                 </select>
+                                <button class="btn btn-light btn-sm w-auto rounded-3 shadow-sm mx-2 border border-dark" type="submit">Cambiar imagen</button>
                             </div>
-                            <button class="btn btn-light btn-sm w-100 rounded-3 shadow-sm" type="submit">Cambiar imagen</button>
                         </form>
-                    </div>
                 </div>
             </div>
             
             @*Nombre*@
-            <div class="col-sm-5 align-items-stretch">
-                <div class="card bg-secondary bg-opacity-10 my-4 mx-2 rounded-4">
+            <div class="col-sm-5 mt-4 pt-1 align-items-center">
+                <div class="card bg-secondary bg-opacity-10 mx-2 rounded-4">
                     <div class="card-body">
                         <h1 class="card-title p-3"><b>Nombre:</b> @Html.DisplayFor(item => usuario.nombre) @Html.DisplayFor(item => usuario.apellido)<h1>
                             <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Html.DisplayFor(temp => rank.fecha_puntaje)</h5>          
@@ -48,8 +47,7 @@
         </div>
 
             @*Segunda hilera*@
-            <div class="row d-flex justify-content-center">
-
+            <div class="row-sm-3 d-flex justify-content-center mb-3">
                 @*Experiencia*@
                 <div class="col-sm-3">
                     <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3">
@@ -82,6 +80,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
