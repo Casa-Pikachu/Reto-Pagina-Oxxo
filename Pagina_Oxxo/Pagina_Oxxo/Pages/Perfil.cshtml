@@ -18,15 +18,16 @@
             <div class="col-sm-3">
                 <div class="mx-2 rounded-5 p-4">
                     <div class="text-center p-1 justify-content-center">
-                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" height="150px" class="mb-3 rounded-3 shadow-sm border border-dark "/>
+                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" height="160px" class="mb-3 rounded-3 shadow-sm border border-dark "/>
                     </div>
                         @* Se mandan los datos de la imagen deseada*@
                         <form method="post">
                             <div class="d-flex justify-content-center">
                                 <select asp-for="fotoP" class="form-select form-select-sm w-auto rounded-3 shadow-sm mx-2 border border-dark">
-                                     <option value="gosth.png">Perfil 1</option>
-                                     <option value="MedallaBronce.png">Perfil 2</option>
-                                     <option value="MedallaPlata.png">Perfil 3</option>
+                                     <option disabled>Elegir Perfil</option>
+                                     <option value="MedallaOro.png">Medalla1</option>
+                                     <option value="imgUsuario.jpg">Persona</option>
+                                     <option value="MedallaPlata.png">Medalla1</option>
                                 </select>
                                 <button class="btn btn-light btn-sm w-auto rounded-3 shadow-sm mx-2 border border-dark" type="submit">Cambiar imagen</button>
                             </div>
