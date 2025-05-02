@@ -5,7 +5,6 @@
     int idUsuario = 3;
     var usuario = Model.usuarioLista?.FirstOrDefault(item => item.id_usuario == idUsuario);
     var rank = Model.usuarioRanking?.FirstOrDefault(temp => temp.id_usuario == idUsuario);
-
 }
 @*Cuadro completo*@
 <div class="center-div">
@@ -19,13 +18,13 @@
             <div class="col-sm-3">
                 <div class="mx-2 rounded-5 p-4">
                     <div class="text-center p-1 justify-content-center">
-                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" height="150px" class="mb-3 rounded-3 shadow-sm border border-dark"/>
+                        <img src="@Url.Content(Model.camino)" alt="original" width="200px" height="150px" class="mb-3 rounded-3 shadow-sm border border-dark "/>
                     </div>
                         @* Se mandan los datos de la imagen deseada*@
                         <form method="post">
                             <div class="d-flex justify-content-center">
                                 <select asp-for="fotoP" class="form-select form-select-sm w-auto rounded-3 shadow-sm mx-2 border border-dark">
-                                     <option value="MedallaOro.png">Perfil 1</option>
+                                     <option value="gosth.png">Perfil 1</option>
                                      <option value="MedallaBronce.png">Perfil 2</option>
                                      <option value="MedallaPlata.png">Perfil 3</option>
                                 </select>
