@@ -86,7 +86,6 @@ namespace Pagina_Oxxo.Model{
             
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_rol = 1", conexion);
 
-            
             using(var reader = cmd.ExecuteReader()){
                 if(reader.Read()){
                     user.id_usuario = Convert.ToInt32(reader["id_usuario"]);

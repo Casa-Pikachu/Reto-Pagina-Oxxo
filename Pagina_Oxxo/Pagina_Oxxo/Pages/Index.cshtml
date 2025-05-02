@@ -14,7 +14,6 @@
                         <div class="tarjeta-inicio card text-center">
                             <h5 class="card-header">Top 3</h5>
                             <div class="card-body">
-                                @* Se puede hacer una tabla como en la demostracion en clase *@
                                 @* Query para obtener los primeros 3 lugares *@
                                 <div class="podio-inicio">
                                     <div class="lugar-podio">
@@ -45,10 +44,8 @@
                             <h5 class="card-header">Mis monedas</h5>
                             <div class="card-body">
                                 <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
-                                
-                                @* SELECT monedas FROM usuarios WHERE id_usuario = *id del usuario actual* *@
                                 <h3>
-                                    $@Model.user.monedas
+                                    <strong>$@Model.user.monedas</strong>
                                 </h3>
                             </div>
                         </div>
@@ -88,10 +85,7 @@
                         <h5 class="card-header">Anuncios</h5>
                         <div class="card-body">
                             <p><strong>@Model.asesor.nombre</strong></p>
-                            <p>Asesor de tienda</p>
-                            @* Tabla en la BD para anuncios? *@
-                            @* <p>Hola, Andrés. ¡Felicidades por llegar al puesto #1 en el podio!</p> *@
-                            
+                            <p>Asesor de tienda</p>                            
                             <div class="scrollable-div">
                                 @foreach (var item in Model.anuncios)
                                 {   

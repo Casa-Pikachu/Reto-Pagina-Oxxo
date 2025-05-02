@@ -1,8 +1,5 @@
 using System;
 
-
-//no borrar esta clase
-
 namespace Pagina_Oxxo.Model{
     public class Podios{
         public int id_usuario {get;set;}
