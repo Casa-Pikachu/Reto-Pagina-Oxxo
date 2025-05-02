@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home page";
     int idUsuario = 3;
     var usuario = Model.usuarioLista.FirstOrDefault(item => item.id_usuario == idUsuario);
+    var rank = Model.usuarioRanking.FirstOrDefault(temp => temp.id_usuario == idUsuario);
 
 }
 @*Cuadro completo*@
@@ -25,13 +26,13 @@
                 <div class="card bg-secondary bg-opacity-10 my-4 mx-2 rounded-4" >
                     <div class="card-body">
                         <h1 class="card-title p-3"><b>Nombre:</b> @Html.DisplayFor(item => usuario.nombre) @Html.DisplayFor(item => usuario.apellido)<h1>
-                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: </h5          
+                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Html.DisplayFor(temp => rank.fecha_puntaje)</h5          
                     </div>
                 </div>    
             </div>                 
         </div>
 
-            @*Segunda Hilera*@
+            @*Segunda hilera*@
             <div class="row d-flex justify-content-center">
 
                 @*Experiencia*@

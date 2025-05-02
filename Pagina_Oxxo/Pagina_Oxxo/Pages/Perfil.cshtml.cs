@@ -9,6 +9,7 @@ public class PerfilModel : PageModel
 
     private readonly DataBaseContext _context;
     public List<Usuarios> usuarioLista { get; set;} 
+    public List<Ranking> usuarioRanking {set;get;}
 
     //constructor para poder usar los metodos
     public PerfilModel(DataBaseContext context) 
@@ -19,6 +20,7 @@ public class PerfilModel : PageModel
     public void OnGet() 
     { 
         usuarioLista = _context.GetAllUsers();
+        usuarioRanking = _context.GetRanking();
 
     }
 }

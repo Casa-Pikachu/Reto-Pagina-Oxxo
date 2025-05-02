@@ -8,7 +8,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext(){
             // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*";
         }
 
         private MySqlConnection GetConnection(){
@@ -164,6 +164,34 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
 
             return ListaItems;
+        }
+
+            public List<Ranking> GetRanking(){
+            List<Ranking> ListaRank = new List<Ranking>();
+
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            MySqlCommand rk = new MySqlCommand("SELECT * FROM Ranking", conexion);
+
+            Ranking rank;
+
+            using(var reader = rk.ExecuteReader()){
+                while(reader.Read()){
+                    rank = new Ranking();
+
+                    rank.id_ranking = Convert.ToInt32(reader["id_ranking"]);
+                    rank.puntaje = Convert.ToInt32(reader["puntaje"]);
+                    rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
+                    rank.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    rank.id_minijuego = Convert.ToInt32(reader["id_minijuego"]);
+
+                    ListaRank.Add(rank);
+                }
+            }
+            conexion.Close();
+
+            return ListaRank;
         }
     }
 }
