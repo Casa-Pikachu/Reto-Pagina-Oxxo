@@ -10,6 +10,7 @@ public class IndexModel : PageModel{
     public List<Anuncios> anuncios = new List<Anuncios>();
     public List<Usuarios> top3 = new List<Usuarios>();
     public List<Recompensas> recompensas = new List<Recompensas>();
+    public Usuarios asesor;
 
     public IndexModel(DataBaseContext context){
         _context = context;
@@ -20,5 +21,6 @@ public class IndexModel : PageModel{
         anuncios = _context.GetAnuncios("Bruno", "Zabala");
         top3 = _context.GetTop3();
         recompensas = _context.GetRecompensas();
+        asesor = _context.GetAsesor(user.id_tienda);
     }
 }
