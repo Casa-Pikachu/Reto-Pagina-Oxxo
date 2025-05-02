@@ -8,7 +8,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext(){
             // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root";
         }
 
         private MySqlConnection GetConnection(){
@@ -78,6 +78,34 @@ namespace Pagina_Oxxo.Model{
             return user;
         }
 
+        public Usuarios GetAsesor(int id_tienda){
+            Usuarios user = new Usuarios();
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_rol = 1", conexion);
+
+            
+            using(var reader = cmd.ExecuteReader()){
+                if(reader.Read()){
+                    user.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    user.nombre = reader["nombre"].ToString();
+                    user.apellido = reader["apellido"].ToString();
+                    user.correo = reader["correo"].ToString();
+                    user.contrasena = reader["contrasena"].ToString();
+                    user.monedas = Convert.ToInt32(reader["monedas"]);
+                    user.experiencia = Convert.ToInt32(reader["experiencia"]);
+                    user.puntos = Convert.ToInt32(reader["puntos"]);
+                    user.id_rol = Convert.ToInt32(reader["id_rol"]);
+                    user.id_tienda = Convert.ToInt32(reader["id_tienda"]);
+                }
+            }
+
+            conexion.Close();
+            return user;
+        }
+
         public List<Anuncios> GetAnuncios(string nombre, string apellido){
             List<Anuncios> ListaAnuncios = new List<Anuncios>();
             
@@ -94,6 +122,7 @@ namespace Pagina_Oxxo.Model{
                     
                     anuncio.id_anuncio = Convert.ToInt32(reader["id_anuncio"]);
                     anuncio.contenido = reader["contenido"].ToString();
+                    anuncio.fecha_anuncio = Convert.ToDateTime(reader["fecha_anuncio"]).ToString("dd/MM/yyyy");
                     anuncio.id_usuario = Convert.ToInt32(reader["id_usuario"]);
                                         
                     ListaAnuncios.Add(anuncio);
@@ -166,7 +195,7 @@ namespace Pagina_Oxxo.Model{
             return ListaItems;
         }
 
-            public List<Ranking> GetRanking(){
+        public List<Ranking> GetRanking(){
             List<Ranking> ListaRank = new List<Ranking>();
 
             MySqlConnection conexion = GetConnection();

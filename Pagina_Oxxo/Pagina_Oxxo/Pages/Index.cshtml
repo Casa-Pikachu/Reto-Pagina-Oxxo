@@ -4,102 +4,104 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-8">
-            <div class="row">
-                @* Podio *@
-                <div class="col-6">
-                    <div class="tarjeta-inicio card text-center">
-                        <h5 class="card-header">Top 3</h5>
-                        <div class="card-body">
-                            @* Se puede hacer una tabla como en la demostracion en clase *@
-                            @* Query para obtener los primeros 3 lugares *@
+<div class="principal mt-4">
+    <div class="tarjetas container">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    @* Podio *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Top 3</h5>
+                            <div class="card-body">
+                                @* Se puede hacer una tabla como en la demostracion en clase *@
+                                @* Query para obtener los primeros 3 lugares *@
+                                <div class="podio-inicio">
+                                    <div class="lugar-podio">
+                                        <p><strong>#1</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[0].nombre</strong></p>
+                                    </div>
 
-                            @foreach (var item in Model.top3)
-                            {
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <img src="" alt="Usuario" class="img-fluid" style="width: 50px;">
-                                    <p><strong>@item.nombre</strong></p>
-                                    <p>@item.experiencia</p>
+                                    <div class="lugar-podio d-flex align-items-center">
+                                        <p><strong>#2</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[1].nombre</strong></p>
+                                    </div>
+
+                                    <div class="lugar-podio d-flex align-items-center">
+                                        <p><strong>#3</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[2].nombre</strong></p>
+                                    </div>
                                 </div>
-                            }
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Monedas *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Mis monedas</h5>
+                            <div class="card-body">
+                                <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
+                                
+                                @* SELECT monedas FROM usuarios WHERE id_usuario = *id del usuario actual* *@
+                                <h3>
+                                    $@Model.user.monedas
+                                </h3>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                @* Monedas *@
-                <div class="col-6">
-                    <div class="tarjeta-inicio card text-center">
-                        <h5 class="card-header">Mis monedas</h5>
-                        <div class="card-body">
-                            <img src="" alt="Moneda" class="img-fluid" style="width: 50px;">
-                            
-                            @* SELECT monedas FROM usuarios WHERE id_usuario = *id del usuario actual* *@
-                            <h3>
-                                @Model.user.monedas
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @* Tienda *@
-            <div class="row mt-4">
-                <div class="col">
-                    <div class="tarjeta-inicio card text-center">
-                        <h5 class="card-header">Tienda</h5>
-                        <div class="card-body d-flex justify-content-around">
-                            @foreach (var item in Model.recompensas){
+                @* Tienda *@
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Tienda</h5>
+                            <div class="card-body d-flex justify-content-around">
                                 <div>
-                                    <img src="" alt="Item" class="img-fluid" style="width: 60px;">
-                                    <p class="mt-2">$@item.precio_recompensa</p>
+                                    <img src="~/imagen/recompensa1.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                                </div>
+
+                                <div>
+                                    <img src="~/imagen/recompensa2.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
                                 </div>          
-                            }
+
+                                <div>
+                                    <img src="~/imagen/recompensa3.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
+                                </div>          
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-4">
-            @* Anuncios *@
-            <div>
-                <div class="tarjeta-inicio card text-center">
-                    <h5 class="card-header">Anuncios</h5>
-                    <div class="card-body">
-                        <p><strong>Mauricio</strong></p>
-                        <p>Asesor de tienda</p>
-                        @* Tabla en la BD para anuncios? *@
-                        @* <p>Hola, Andrés. ¡Felicidades por llegar al puesto #1 en el podio!</p> *@
-                        
-                        <div class="scrollable-div">
-                            @foreach (var item in Model.anuncios)
-                            {   
-                                    <p>@item.contenido</p>
-                            }
-
-                            @foreach (var item in Model.anuncios)
-                            {   
-                                    <p>@item.contenido</p>
-                            }
-
-                            @foreach (var item in Model.anuncios)
-                            {   
-                                    <p>@item.contenido</p>
-                            }
-
-                            @foreach (var item in Model.anuncios)
-                            {   
-                                    <p>@item.contenido</p>
-                            }
-
-                            @foreach (var item in Model.anuncios)
-                            {   
-                                    <p>@item.contenido</p>
-                            }
+            <div class="col-4">
+                @* Anuncios *@
+                <div class="anuncios">
+                    <div class="tarjeta-anuncios card text-center">
+                        <h5 class="card-header">Anuncios</h5>
+                        <div class="card-body">
+                            <p><strong>@Model.asesor.nombre</strong></p>
+                            <p>Asesor de tienda</p>
+                            @* Tabla en la BD para anuncios? *@
+                            @* <p>Hola, Andrés. ¡Felicidades por llegar al puesto #1 en el podio!</p> *@
+                            
+                            <div class="scrollable-div">
+                                @foreach (var item in Model.anuncios)
+                                {   
+                                        <div class="anuncio">
+                                            <p>@item.fecha_anuncio</p>
+                                            <p>@item.contenido</p>
+                                        </div>
+                                }
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
