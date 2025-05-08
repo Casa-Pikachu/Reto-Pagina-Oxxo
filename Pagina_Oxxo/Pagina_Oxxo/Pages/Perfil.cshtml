@@ -2,9 +2,7 @@
 @model PerfilModel
 @{
     ViewData["Title"] = "Perfil";
-    int idUsuario = 3;
-    var usuario = Model.usuarioLista?.FirstOrDefault(item => item.id_usuario == idUsuario);
-    var rank = Model.usuarioRanking?.FirstOrDefault(temp => temp.id_usuario == idUsuario);
+   
 }
 @* @Cuadro completo@ *@
 <div class="center-div">
@@ -39,8 +37,8 @@
             <div class="col-sm-5 mt-4 pt-1 align-items-center">
                 <div class="card bg-secondary bg-opacity-10 mx-2 rounded-4">
                     <div class="card-body">
-                        <h1 class="card-title p-3"><b>Nombre:</b> @Html.DisplayFor(item => usuario.nombre) @Html.DisplayFor(item => usuario.apellido)<h1>
-                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Html.DisplayFor(temp => rank.fecha_puntaje)</h5>          
+                        <h1 class="card-title p-3"><b>Nombre:</b> @Model.usuario.nombre @Model.usuario.apellido<h1>
+                            <h5 class="card-text mx-2 px-1 pb-3 text-muted">Último Juego: @Model.ranking.fecha_puntaje</h5>          
                     </div>
                 </div>    
             </div>                 
@@ -53,7 +51,7 @@
                     <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3">
                         <div class="card-body"> 
                             <h2 class="text-title text-center fw-bold color-header">Experiencia</h2>
-                            <h1 class="card-text text-center color-text fw-bold">@Html.DisplayFor(item => usuario.experiencia)</h1>
+                            <h1 class="card-text text-center color-text fw-bold">@Model.usuario.experiencia</h1>
                         </div>
                     </div>
                 </div>
@@ -63,7 +61,7 @@
                     <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3">
                         <div class="card-body">
                             <h2 class="card-title text-center fw-bold color-header">Puntos</h2>
-                            <h1 class="card-text text-center color-text fw-bold5">@Html.DisplayFor(item => usuario.puntos)</h1>
+                            <h1 class="card-text text-center color-text fw-bold">@Model.usuario.puntos</h1>
                         </div>
                     </div>
                 </div>            
@@ -73,7 +71,7 @@
                     <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3">
                         <div class="card-body">
                             <h2 class="card-title text-center fw-bold color-header">Monedas</h2>
-                            <h1 class="card-text text-center color-text fw-bold">@Html.DisplayFor(item => usuario.monedas)</h1>
+                            <h1 class="card-text text-center color-text fw-bold">@Model.usuario.monedas</h1>
                         </div> 
                     </div>
                 </div>  
