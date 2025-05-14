@@ -8,7 +8,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext(){
             // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*;";
         }
 
         private MySqlConnection GetConnection(){
@@ -311,32 +311,48 @@ namespace Pagina_Oxxo.Model{
             return resultado; 
         }
 
-        public List<Ranking> GetRanking(){
-            List<Ranking> ListaRank = new List<Ranking>();
+        public Ranking GetRanking(int id_usuario_){
+            Ranking rank = new Ranking();
 
             MySqlConnection conexion = GetConnection();
             conexion.Open();
             
-            MySqlCommand rk = new MySqlCommand("SELECT * FROM Ranking", conexion);
-
-            Ranking rank;
+            MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
 
             using(var reader = rk.ExecuteReader()){
-                while(reader.Read()){
-                    rank = new Ranking();
-
-                    rank.id_ranking = Convert.ToInt32(reader["id_ranking"]);
-                    rank.puntaje = Convert.ToInt32(reader["puntaje"]);
+                if(reader.Read()){
+                    
                     rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
-                    rank.id_usuario = Convert.ToInt32(reader["id_usuario"]);
-                    rank.id_minijuego = Convert.ToInt32(reader["id_minijuego"]);
-
-                    ListaRank.Add(rank);
                 }
             }
+            
             conexion.Close();
-
-            return ListaRank;
+            return rank;
         }
+
+        public Usuarios GetUserId(int id_usuario){
+            Usuarios usuario = new Usuarios();
+            
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            
+            MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
+
+            
+            using(var reader = cmd.ExecuteReader()){
+                if(reader.Read()){
+                    usuario.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    usuario.nombre = reader["nombre"].ToString();
+                    usuario.apellido = reader["apellido"].ToString();
+                    usuario.monedas = Convert.ToInt32(reader["monedas"]);
+                    usuario.experiencia = Convert.ToInt32(reader["experiencia"]);
+                    usuario.puntos = Convert.ToInt32(reader["puntos"]);
+                }
+            }
+
+            conexion.Close();
+            return usuario;
+        }
+
     }
 }
