@@ -8,7 +8,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext(){
             // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*;";
         }
 
         private MySqlConnection GetConnection(){
@@ -317,17 +317,12 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
             
-            MySqlCommand rk = new MySqlCommand($"SELECT * FROM Ranking where id_usuario = {id_usuario_} AND id_usuario = 3", conexion);
+            MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
 
             using(var reader = rk.ExecuteReader()){
                 if(reader.Read()){
                     
-
-                    rank.id_ranking = Convert.ToInt32(reader["id_ranking"]);
-                    rank.puntaje = Convert.ToInt32(reader["puntaje"]);
                     rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
-                    rank.id_usuario = Convert.ToInt32(reader["id_usuario"]);
-                    rank.id_minijuego = Convert.ToInt32(reader["id_minijuego"]);
                 }
             }
             
@@ -341,7 +336,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
             
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_usuario = {id_usuario} AND id_usuario = 3", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
 
             
             using(var reader = cmd.ExecuteReader()){
@@ -349,13 +344,9 @@ namespace Pagina_Oxxo.Model{
                     usuario.id_usuario = Convert.ToInt32(reader["id_usuario"]);
                     usuario.nombre = reader["nombre"].ToString();
                     usuario.apellido = reader["apellido"].ToString();
-                    usuario.correo = reader["correo"].ToString();
-                    usuario.contrasena = reader["contrasena"].ToString();
                     usuario.monedas = Convert.ToInt32(reader["monedas"]);
                     usuario.experiencia = Convert.ToInt32(reader["experiencia"]);
                     usuario.puntos = Convert.ToInt32(reader["puntos"]);
-                    usuario.id_rol = Convert.ToInt32(reader["id_rol"]);
-                    usuario.id_tienda = Convert.ToInt32(reader["id_tienda"]);
                 }
             }
 
