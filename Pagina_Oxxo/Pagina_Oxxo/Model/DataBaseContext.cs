@@ -10,7 +10,8 @@ namespace Pagina_Oxxo.Model{
         public DataBaseContext()
         {
             // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=3sNoopyG;";
+
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=BigDipper11*;";
         }
 
         private MySqlConnection GetConnection()
@@ -341,12 +342,14 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
+
             MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
 
             using (var reader = rk.ExecuteReader())
             {
                 if (reader.Read())
                 {
+
 
                     rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
                 }
@@ -362,6 +365,9 @@ namespace Pagina_Oxxo.Model{
 
             MySqlConnection conexion = GetConnection();
             conexion.Open();
+
+            
+
 
             MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
 
@@ -404,8 +410,6 @@ namespace Pagina_Oxxo.Model{
                     usuario.monedas = Convert.ToInt32(reader["monedas"]);
                     usuario.experiencia = Convert.ToInt32(reader["experiencia"]);
                     usuario.puntos = Convert.ToInt32(reader["puntos"]);
-                    usuario.id_rol = Convert.ToInt32(reader["id_rol"]);
-                    usuario.id_tienda = Convert.ToInt32(reader["id_tienda"]);
                 }
             }
 
