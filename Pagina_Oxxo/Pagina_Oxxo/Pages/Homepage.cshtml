@@ -1,0 +1,105 @@
+﻿@page
+@model HomepageModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+<h1>@Model.mensaje</h1>
+
+<div class="principal center-myDiv mt-4">
+    <div class="tarjetas container">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    @* Podio *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Top 3</h5>
+                            <div class="card-body">
+                                @* Query para obtener los primeros 3 lugares *@
+                                <div class="podio-inicio">
+                                    <div class="lugar-podio">
+                                        <p><strong>#1</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[0].nombre</strong></p>
+                                    </div>
+
+                                    <div class="lugar-podio d-flex align-items-center">
+                                        <p><strong>#2</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[1].nombre</strong></p>
+                                    </div>
+
+                                    <div class="lugar-podio d-flex align-items-center">
+                                        <p><strong>#3</strong></p>
+                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                        <p><strong>@Model.top3[2].nombre</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Monedas *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Mis monedas</h5>
+                            <div class="card-body">
+                                <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
+                                <h3>
+                                    <strong>$@Model.user.monedas</strong>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* Tienda *@
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Tienda</h5>
+                            <div class="card-body d-flex justify-content-around">
+                                <div>
+                                    <img src="~/imagen/recompensa1.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                                </div>
+
+                                <div>
+                                    <img src="~/imagen/recompensa2.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
+                                </div>          
+
+                                <div>
+                                    <img src="~/imagen/recompensa3.png" alt="Item" class="img-recompensa img-fluid">
+                                    <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
+                                </div>          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                @* Anuncios *@
+                <div class="anuncios">
+                    <div class="tarjeta-anuncios card text-center">
+                        <h5 class="card-header">Anuncios de tu Asesor de Tienda</h5>
+                        <div class="card-body">
+                            <p><strong>@Model.asesor.nombre</strong></p>
+                            <p>Tienda @Model.textTienda_Asesor</p>                            
+                            <div class="scrollable-div">
+                                @foreach (var item in Model.anuncios)
+                                {   
+                                        <div class="anuncio">
+                                            <p>@item.fecha_anuncio</p>
+                                            <p>@item.contenido</p>
+                                        </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

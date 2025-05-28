@@ -1,104 +1,53 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Login";
+    Layout = null;
 }
+<script type="importmap"></script>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/IndexStyles.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/PerfilStyles.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Pagina_Oxxo.styles.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@400..700&family=Exo:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=PT+Sans+Narrow:wght@400;700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/LoginStyles.css" asp-append-version="true" />
 
-<div class="principal center-myDiv mt-4">
-    <div class="tarjetas container">
-        <div class="row">
-            <div class="col-8">
-                <div class="row">
-                    @* Podio *@
-                    <div class="col-6">
-                        <div class="tarjeta-inicio card text-center">
-                            <h5 class="card-header">Top 3</h5>
-                            <div class="card-body">
-                                @* Query para obtener los primeros 3 lugares *@
-                                <div class="podio-inicio">
-                                    <div class="lugar-podio">
-                                        <p><strong>#1</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[0].nombre</strong></p>
-                                    </div>
-
-                                    <div class="lugar-podio d-flex align-items-center">
-                                        <p><strong>#2</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[1].nombre</strong></p>
-                                    </div>
-
-                                    <div class="lugar-podio d-flex align-items-center">
-                                        <p><strong>#3</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[2].nombre</strong></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    @* Monedas *@
-                    <div class="col-6">
-                        <div class="tarjeta-inicio card text-center">
-                            <h5 class="card-header">Mis monedas</h5>
-                            <div class="card-body">
-                                <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
-                                <h3>
-                                    <strong>$@Model.user.monedas</strong>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @* Tienda *@
-                <div class="row mt-4">
-                    <div class="col">
-                        <div class="tarjeta-inicio card text-center">
-                            <h5 class="card-header">Tienda</h5>
-                            <div class="card-body d-flex justify-content-around">
-                                <div>
-                                    <img src="~/imagen/recompensa1.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
-                                </div>
-
-                                <div>
-                                    <img src="~/imagen/recompensa2.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
-                                </div>          
-
-                                <div>
-                                    <img src="~/imagen/recompensa3.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
-                                </div>          
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom pt-3 pb-3 box-shadow mb-3 top">
+            <div class="container-fluid mx-3">
+                <img src="~/imagen/Oxxo.png" alt="" width="70" height="35">
             </div>
+        </nav>
+    </header>
 
-            <div class="col-4">
-                @* Anuncios *@
-                <div class="anuncios">
-                    <div class="tarjeta-anuncios card text-center">
-                        <h5 class="card-header">Anuncios</h5>
-                        <div class="card-body">
-                            <p><strong>@Model.asesor.nombre</strong></p>
-                            <p>Asesor de tienda</p>                            
-                            <div class="scrollable-div">
-                                @foreach (var item in Model.anuncios)
-                                {   
-                                        <div class="anuncio">
-                                            <p>@item.fecha_anuncio</p>
-                                            <p>@item.contenido</p>
-                                        </div>
-                                }
-                            </div>
+    <div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 200px);">
+        <div class="col-12 col-md-4">
+            <form method="post">
+                <div class="card w-75" style="height: 400px;">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                        <img src="~/imagen/Oxxo.png" alt="" width="70" height="35">
+                        <h1 class="card-title">Inicio Sesión</h1>
+
+                        <div class="form w-75 mt-2">
+                        <label for="floatingInputGrid" class="text-start w-100">Usuario</label>
+                        <input asp-for="email" type="text" class="form-control border border-dark rounded " id="floatingInputGrid">
                         </div>
+
+                        <div class="form w-75 mt-2">
+                        <label for="floatingInputGrid" class="text-start w-100">Contraseña</label>
+                        <input asp-for="password" type="password" class="form-control border border-dark rounded" id="floatingInputGrid">
+                        </div>
+
+                        <p id="mensaje" class="text-danger">@Model.Mensaje</p>
+
+                        <input type="submit" asp-page-handler="Iniciar" class="btn btn-outline-dark mt-3" value="Iniciar Sesión" />
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</div>
+</body>
