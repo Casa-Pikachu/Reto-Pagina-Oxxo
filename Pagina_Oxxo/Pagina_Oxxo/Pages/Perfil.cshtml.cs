@@ -28,21 +28,34 @@ public class PerfilModel : PageModel
     public void OnGet() 
     { 
         //Conexión a base de datos
-        usuario = _context.GetUserId(3);
-        ranking = _context.GetRanking(3);
-
+        int? userId = HttpContext.Session.GetInt32("id_usuario");
+        if (userId.HasValue)
+    {
+        usuario = _context.GetUserId(userId.Value);
+        ranking = _context.GetRanking(userId.Value);
         camino = "~/imagen/Oxxo.png";
+    }
+    else
+    {
+        Response.Redirect("Index");
+    }
+        
     }
 
     public void OnPost()
+{
+    int? userId = HttpContext.Session.GetInt32("id_usuario");
+    if (userId.HasValue)
     {
-        //Se vuelven a cargar los datos al hacer post
-        usuario = _context.GetUserId(3);
-        ranking = _context.GetRanking(3);
-
-        //se enlaza el camino para llegar a la imagen y su nombre
+        usuario = _context.GetUserId(userId.Value);
+        ranking = _context.GetRanking(userId.Value);
         camino = $"~/imagen/{fotoP}";
     }
+    else
+    {
+        Response.Redirect("Index");
+    }
+}
 }
 
 
