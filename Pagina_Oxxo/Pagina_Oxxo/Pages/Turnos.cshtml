@@ -1,0 +1,154 @@
+@page
+@model TurnosModel
+@{
+    ViewData["Title"] = "Turnos";
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    body {
+        background-color: #fff9ee;
+    }
+</style>
+
+<div>
+    <h1>Turnos y Asistencias</h1>
+</div>
+
+<div class="row mb-3 align-items-center">
+    <div class="col-auto">
+        <h2 class="mb-0">Semana del</h2>
+    </div>
+    <div class="col-auto">
+        <form method="get">
+            <select name="SemanaSeleccionada" class="custom-select" onchange="this.form.submit()">
+                <option value="" selected="@(Model.SemanaSeleccionada == DateTime.MinValue)">Elige Semana</option>
+                @foreach (var semana in Model.FechasUnicas)
+                {
+                    var valor = semana.ToString("yyyy-MM-dd");
+                    var texto = semana.ToString("dd 'de' MMMM", new System.Globalization.CultureInfo("es-MX"));
+                    <option value="@valor" selected="@(semana == Model.SemanaSeleccionada)">
+                        @texto
+                    </option>
+                }
+            </select>
+        </form>
+    </div>
+    <div class="col-auto ml-auto mt-2">
+        <button id="btnAsignar" type="button" class="btn btn-danger">Asignar Turno</button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th>Empleado</th>
+                <th>Horario</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mié</th>
+                <th>Jue</th>
+                <th>Vie</th>
+                <th>Sáb</th>
+                <th>Dom</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.TurnosLista)
+            {
+                <tr data-empleado="@t.empleado">
+                    <td>@t.empleado</td>
+                    <td>@t.horario</td>
+                    <td><input type="checkbox" data-dia="lunes" @(t.lunes ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="martes" @(t.martes ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="miercoles" @(t.miercoles ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="jueves" @(t.jueves ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="viernes" @(t.viernes ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="sabado" @(t.sabado ? "checked" : "") /></td>
+                    <td><input type="checkbox" data-dia="domingo" @(t.domingo ? "checked" : "") /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById("btnAsignar").addEventListener("click", async () => {
+        const semanaSeleccionada = "@(Model.SemanaSeleccionada != DateTime.MinValue ? Model.SemanaSeleccionada.ToString("yyyy-MM-dd") : "")";
+        const id_usuario = @Model.id_usuario;
+        
+        if (!semanaSeleccionada || semanaSeleccionada === "") {
+            alert("Por favor selecciona una semana válida primero");
+            return;
+        }
+
+        console.log("Semana seleccionada:", semanaSeleccionada);
+        console.log("ID Usuario:", id_usuario);
+
+        const updates = [];
+        let hasChanges = false;
+        
+        document.querySelectorAll("tbody tr").forEach(row => {
+            const empleado = row.getAttribute("data-empleado");
+            const horario = row.querySelector('td:nth-child(2)').textContent;
+            
+            const turnoData = {
+                lunes: row.querySelector('[data-dia="lunes"]').checked,
+                martes: row.querySelector('[data-dia="martes"]').checked,
+                miercoles: row.querySelector('[data-dia="miercoles"]').checked,
+                jueves: row.querySelector('[data-dia="jueves"]').checked,
+                viernes: row.querySelector('[data-dia="viernes"]').checked,
+                sabado: row.querySelector('[data-dia="sabado"]').checked,
+                domingo: row.querySelector('[data-dia="domingo"]').checked
+            };
+            
+            console.log(Datos para ${empleado}:, turnoData);
+            
+            // Cambiar la ruta del API - usar 'Turnos' con mayúscula
+            const url = /api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada};
+            console.log("URL:", url);
+            
+            updates.push(
+                fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(turnoData)
+                }).then(response => {
+                    console.log(Response status for ${empleado}:, response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error(Error response for ${empleado}:, text);
+                            throw new Error(Error actualizando ${empleado}: Status ${response.status} - ${text});
+                        });
+                    }
+                    return response.json();
+                }).catch(error => {
+                    console.error(Catch error for ${empleado}:, error);
+                    throw error;
+                })
+            );
+            
+            hasChanges = true;
+        });
+        
+        if (!hasChanges) {
+            alert("No hay cambios para guardar");
+            return;
+        }
+        
+        console.log("Enviando", updates.length, "actualizaciones...");
+        
+        Promise.all(updates).then(results => {
+            console.log("Todos los resultados:", results);
+            alert("Turnos actualizados correctamente");
+            location.reload();
+        }).catch(error => {
+            console.error("Error general:", error);
+            alert(Error al guardar cambios: ${error.message});
+        });
+    });
+</script>
