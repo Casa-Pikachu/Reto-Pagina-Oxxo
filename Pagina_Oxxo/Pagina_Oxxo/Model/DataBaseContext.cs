@@ -11,12 +11,8 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext()
         {
-<<<<<<< Updated upstream
             // DB local Bruno
 
-=======
-            // DB local Saldaña
->>>>>>> Stashed changes
             ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
         }
 
@@ -348,10 +344,6 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
             MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
 
             using (var reader = rk.ExecuteReader())
@@ -359,10 +351,6 @@ namespace Pagina_Oxxo.Model{
                 if (reader.Read())
                 {
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
                     rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
                 }
             }
@@ -378,12 +366,9 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-<<<<<<< Updated upstream
 
 
 
-=======
->>>>>>> Stashed changes
             MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
 
 
@@ -404,7 +389,6 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
-<<<<<<< Updated upstream
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -432,9 +416,7 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
             return usuario;
         }
-        
-=======
->>>>>>> Stashed changes
+
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
         {
             List<Turnos> myListaTurnos = new List<Turnos>();
@@ -471,10 +453,9 @@ namespace Pagina_Oxxo.Model{
 
             return myListaTurnos;
         }
-        
+
         public IActionResult updateHorario(int id_usuario, string empleado, DateTime semana, Turnos upToDate)
         {
-<<<<<<< Updated upstream
             using var conexion = GetConnection();
             conexion.Open();
 
@@ -502,42 +483,6 @@ namespace Pagina_Oxxo.Model{
         }
 
 
-=======
-            Console.WriteLine($"➡️ Ejecutando updateHorario");
-            Console.WriteLine($"ID Usuario: {id_usuario}");
-            Console.WriteLine($"Empleado: '{empleado}'"); // Notar comillas para ver si hay espacios
-            Console.WriteLine($"Semana: {semana:yyyy-MM-dd}");
-            Console.WriteLine($"Turno: Lun={upToDate.lunes}, Mar={upToDate.martes}, Mie={upToDate.miercoles}, Jue={upToDate.jueves}, Vie={upToDate.viernes}, Sab={upToDate.sabado}, Dom={upToDate.domingo}");
-
-            using (MySqlConnection conexion = GetConnection())
-            {
-                conexion.Open();
-
-                MySqlCommand cmd = new MySqlCommand("updateHorarios", conexion);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@userId", id_usuario);
-                cmd.Parameters.AddWithValue("@empleadoAct", empleado);
-                cmd.Parameters.AddWithValue("@hourDate", semana);
-                cmd.Parameters.AddWithValue("@newLun", upToDate.lunes);
-                cmd.Parameters.AddWithValue("@newMar", upToDate.martes);
-                cmd.Parameters.AddWithValue("@newMie", upToDate.miercoles);
-                cmd.Parameters.AddWithValue("@newJue", upToDate.jueves);
-                cmd.Parameters.AddWithValue("@newVie", upToDate.viernes);
-                cmd.Parameters.AddWithValue("@newSab", upToDate.sabado);
-                cmd.Parameters.AddWithValue("@newDom", upToDate.domingo);
-
-                int filasAfectadas = cmd.ExecuteNonQuery();
-
-                Console.WriteLine($"Filas afectadas: {filasAfectadas}");
-
-                return filasAfectadas > 0
-                    ? new OkResult()
-                    : new NotFoundObjectResult("No se actualizó ningún registro");
-            }
-        }
-
->>>>>>> Stashed changes
         public List<DateTime> GetSemanasDisponibles(int id_usuario)
         {
             List<DateTime> semanas = new List<DateTime>();
@@ -555,9 +500,82 @@ namespace Pagina_Oxxo.Model{
             return semanas;
         }
 
-<<<<<<< Updated upstream
-=======
+        public List<Recompensas> GetAllRecompensas()
+        {
+            List<Recompensas> ListaItems = new List<Recompensas>();
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM RECOMPENSAS", conexion);
+            Recompensas item;
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    item = new Recompensas();
+                    item.id_recompensa = Convert.ToInt32(reader["id_recompensa"]);
+                    item.nombre_recompensa = reader["nombre_recompensa"].ToString();
+                    item.descripcion_recompensa = reader["descripcion_recompensa"].ToString();
+                    item.precio_recompensa = Convert.ToInt32(reader["precio_recompensa"]);
+                    item.imagen_url = reader["imagen_url"].ToString();
+                    ListaItems.Add(item);
+                }
+            }
+            conexion.Close();
+            return ListaItems;
+        }
+        
+        public List<Recompensas> GetRecompensasConEstadoCompra(int id_usuario)
+       {
+           List<Recompensas> listaRecompensas = new List<Recompensas>();
+           using (MySqlConnection conexion = GetConnection())
+           {
+               conexion.Open();
+               string query = @"
+                   SELECT r.*,
+                       CASE WHEN rc.id_recompensa_comprada IS NOT NULL THEN 1 ELSE 0 END AS comprado
+                   FROM recompensas r
+                   LEFT JOIN recompensa_comprada rc
+                       ON r.id_recompensa = rc.id_recompensa_comprada
+                       AND rc.id_usuario = @id_usuario";
+               using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+               {
+                   cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
+                   using (var reader = cmd.ExecuteReader())
+                   {
+                       while (reader.Read())
+                       {
+                           listaRecompensas.Add(new Recompensas
+                           {
+                               id_recompensa = Convert.ToInt32(reader["id_recompensa"]),
+                               nombre_recompensa = reader["nombre_recompensa"].ToString(),
+                               descripcion_recompensa = reader["descripcion_recompensa"].ToString(),
+                               precio_recompensa = Convert.ToInt32(reader["precio_recompensa"]),
+                               imagen_url = reader["imagen_url"].ToString(),
+                               ya_comprado = Convert.ToInt32(reader["comprado"]) == 1
+                           });
+                       }
+                   }
+               }
+           }
+           return listaRecompensas;
+       }
+       public int GetMonedasUsuario(int idUsuario)
+       {
+           using (MySqlConnection conexion = GetConnection())
+           {
+               conexion.Open();
+              
+               string query = "SELECT monedas FROM usuarios WHERE id_usuario = @idUsuario";
+              
+               using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+               {
+                   cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                   var result = cmd.ExecuteScalar();
+                  
+                   return result != null ? Convert.ToInt32(result) : 0;
+               }
+           }
+       }
 
->>>>>>> Stashed changes
     }
 }
