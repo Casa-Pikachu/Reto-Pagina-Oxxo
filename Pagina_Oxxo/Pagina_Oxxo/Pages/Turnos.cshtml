@@ -78,12 +78,17 @@
     document.getElementById("btnAsignar").addEventListener("click", async () => {
         const semanaSeleccionada = "@(Model.SemanaSeleccionada != DateTime.MinValue ? Model.SemanaSeleccionada.ToString("yyyy-MM-dd") : "")";
         const id_usuario = @Model.id_usuario;
+<<<<<<< Updated upstream
 
+=======
+        
+>>>>>>> Stashed changes
         if (!semanaSeleccionada || semanaSeleccionada === "") {
             alert("Por favor selecciona una semana válida primero");
             return;
         }
 
+<<<<<<< Updated upstream
         const updates = [];
 
         document.querySelectorAll("tbody tr").forEach(row => {
@@ -93,6 +98,19 @@
             const turnoData = {
                 empleado: empleado,
                 horario: horario,
+=======
+        console.log("Semana seleccionada:", semanaSeleccionada);
+        console.log("ID Usuario:", id_usuario);
+
+        const updates = [];
+        let hasChanges = false;
+        
+        document.querySelectorAll("tbody tr").forEach(row => {
+            const empleado = row.getAttribute("data-empleado").trim();
+            const horario = row.querySelector('td:nth-child(2)').textContent;
+            
+            const turnoData = {
+>>>>>>> Stashed changes
                 lunes: row.querySelector('[data-dia="lunes"]').checked,
                 martes: row.querySelector('[data-dia="martes"]').checked,
                 miercoles: row.querySelector('[data-dia="miercoles"]').checked,
@@ -101,9 +119,16 @@
                 sabado: row.querySelector('[data-dia="sabado"]').checked,
                 domingo: row.querySelector('[data-dia="domingo"]').checked
             };
+<<<<<<< Updated upstream
 
             const url = `/api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada}`;
 
+=======
+            
+            const url = `https://10.22.168.234:7222/api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada}`;
+            console.log("URL:", url);
+            
+>>>>>>> Stashed changes
             updates.push(
                 fetch(url, {
                     method: "PUT",
@@ -112,12 +137,20 @@
                     },
                     body: JSON.stringify(turnoData)
                 }).then(response => {
+<<<<<<< Updated upstream
                     if (!response.ok) {
                         return response.text().then(text => {
+=======
+                    console.log(`Response status for ${empleado}:`, response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error(`Error response for ${empleado}:`, text);
+>>>>>>> Stashed changes
                             throw new Error(`Error actualizando ${empleado}: Status ${response.status} - ${text}`);
                         });
                     }
                     return response.json();
+<<<<<<< Updated upstream
                 })
             );
         });
@@ -126,6 +159,30 @@
             alert("Turnos actualizados correctamente");
             location.reload();
         }).catch(error => {
+=======
+                }).catch(error => {
+                    console.error(`Catch error for ${empleado}:`, error);
+                    throw error;
+                })
+            );
+            
+            hasChanges = true;
+        });
+        
+        if (!hasChanges) {
+            alert("No hay cambios para guardar");
+            return;
+        }
+        
+        console.log("Enviando", updates.length, "actualizaciones...");
+        
+        Promise.all(updates).then(results => {
+            console.log("Todos los resultados:", results);
+            alert("Turnos actualizados correctamente");
+            location.reload();
+        }).catch(error => {
+            console.error("Error general:", error);
+>>>>>>> Stashed changes
             alert(`Error al guardar cambios: ${error.message}`);
         });
     });

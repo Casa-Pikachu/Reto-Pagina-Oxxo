@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+<<<<<<< Updated upstream
 builder.Services.AddRazorPages();  
 builder.Services.AddControllers();
 
@@ -15,6 +16,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+=======
+builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+>>>>>>> Stashed changes
 
 builder.Services.Add(new ServiceDescriptor(typeof(DataBaseContext), new DataBaseContext()));
 

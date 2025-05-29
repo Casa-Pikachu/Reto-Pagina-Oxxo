@@ -11,8 +11,12 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext()
         {
+<<<<<<< Updated upstream
             // DB local Bruno
 
+=======
+            // DB local Saldaña
+>>>>>>> Stashed changes
             ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
         }
 
@@ -344,7 +348,10 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
 
             using (var reader = rk.ExecuteReader())
@@ -352,7 +359,10 @@ namespace Pagina_Oxxo.Model{
                 if (reader.Read())
                 {
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                     rank.fecha_puntaje = reader["fecha_puntaje"].ToString();
                 }
             }
@@ -368,9 +378,12 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
             MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
 
 
@@ -391,6 +404,7 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
+<<<<<<< Updated upstream
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -419,6 +433,8 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
         
+=======
+>>>>>>> Stashed changes
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
         {
             List<Turnos> myListaTurnos = new List<Turnos>();
@@ -458,6 +474,7 @@ namespace Pagina_Oxxo.Model{
         
         public IActionResult updateHorario(int id_usuario, string empleado, DateTime semana, Turnos upToDate)
         {
+<<<<<<< Updated upstream
             using var conexion = GetConnection();
             conexion.Open();
 
@@ -485,6 +502,42 @@ namespace Pagina_Oxxo.Model{
         }
 
 
+=======
+            Console.WriteLine($"➡️ Ejecutando updateHorario");
+            Console.WriteLine($"ID Usuario: {id_usuario}");
+            Console.WriteLine($"Empleado: '{empleado}'"); // Notar comillas para ver si hay espacios
+            Console.WriteLine($"Semana: {semana:yyyy-MM-dd}");
+            Console.WriteLine($"Turno: Lun={upToDate.lunes}, Mar={upToDate.martes}, Mie={upToDate.miercoles}, Jue={upToDate.jueves}, Vie={upToDate.viernes}, Sab={upToDate.sabado}, Dom={upToDate.domingo}");
+
+            using (MySqlConnection conexion = GetConnection())
+            {
+                conexion.Open();
+
+                MySqlCommand cmd = new MySqlCommand("updateHorarios", conexion);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@userId", id_usuario);
+                cmd.Parameters.AddWithValue("@empleadoAct", empleado);
+                cmd.Parameters.AddWithValue("@hourDate", semana);
+                cmd.Parameters.AddWithValue("@newLun", upToDate.lunes);
+                cmd.Parameters.AddWithValue("@newMar", upToDate.martes);
+                cmd.Parameters.AddWithValue("@newMie", upToDate.miercoles);
+                cmd.Parameters.AddWithValue("@newJue", upToDate.jueves);
+                cmd.Parameters.AddWithValue("@newVie", upToDate.viernes);
+                cmd.Parameters.AddWithValue("@newSab", upToDate.sabado);
+                cmd.Parameters.AddWithValue("@newDom", upToDate.domingo);
+
+                int filasAfectadas = cmd.ExecuteNonQuery();
+
+                Console.WriteLine($"Filas afectadas: {filasAfectadas}");
+
+                return filasAfectadas > 0
+                    ? new OkResult()
+                    : new NotFoundObjectResult("No se actualizó ningún registro");
+            }
+        }
+
+>>>>>>> Stashed changes
         public List<DateTime> GetSemanasDisponibles(int id_usuario)
         {
             List<DateTime> semanas = new List<DateTime>();
@@ -502,5 +555,9 @@ namespace Pagina_Oxxo.Model{
             return semanas;
         }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
 }
