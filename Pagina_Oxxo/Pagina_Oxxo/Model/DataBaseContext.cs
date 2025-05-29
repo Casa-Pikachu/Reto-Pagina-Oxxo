@@ -415,7 +415,9 @@ namespace Pagina_Oxxo.Model{
             return ListaItems;
         }
 
-        public List<Recompensas> GetRecompensasNoCompradas(int id_usuario)
+
+
+        public List<Recompensas> GetRecompensasConEstadoCompra(int id_usuario)
         {
             List<Recompensas> listaRecompensas = new List<Recompensas>();
 
@@ -424,12 +426,12 @@ namespace Pagina_Oxxo.Model{
                 conexion.Open();
 
                 string query = @"
-                    SELECT r.*
+                    SELECT r.*, 
+                        CASE WHEN rc.id_recompensa_comprada IS NOT NULL THEN 1 ELSE 0 END AS comprado
                     FROM recompensas r
                     LEFT JOIN recompensa_comprada rc 
                         ON r.id_recompensa = rc.id_recompensa_comprada 
-                        AND rc.id_usuario = @id_usuario
-                    WHERE rc.id_recompensa_comprada IS NULL";
+                        AND rc.id_usuario = @id_usuario";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conexion))
                 {
@@ -446,7 +448,7 @@ namespace Pagina_Oxxo.Model{
                                 descripcion_recompensa = reader["descripcion_recompensa"].ToString(),
                                 precio_recompensa = Convert.ToInt32(reader["precio_recompensa"]),
                                 imagen_url = reader["imagen_url"].ToString(),
-                                ya_comprado = false // Todas estas son no compradas por definición
+                                ya_comprado = Convert.ToInt32(reader["comprado"]) == 1
                             });
                         }
                     }
@@ -455,6 +457,7 @@ namespace Pagina_Oxxo.Model{
 
             return listaRecompensas;
         }
+
 
         public int GetMonedasUsuario(int idUsuario)
         {
