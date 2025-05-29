@@ -44,3 +44,5 @@ public class PerfilModel : PageModel
         camino = $"~/imagen/{fotoP}";
     }
 }
+
+

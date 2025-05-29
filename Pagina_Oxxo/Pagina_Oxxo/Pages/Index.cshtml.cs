@@ -20,7 +20,7 @@ public class IndexModel : PageModel{
         user = _context.GetUserInfo("Bruno", "Zabala");
         anuncios = _context.GetAnuncios("Bruno", "Zabala");
         top3 = _context.GetTop3();
-        recompensas = _context.GetRecompensas();
+        recompensas = _context.Get3Recompensas();
         asesor = _context.GetAsesor(user.id_tienda);
     }
 }
