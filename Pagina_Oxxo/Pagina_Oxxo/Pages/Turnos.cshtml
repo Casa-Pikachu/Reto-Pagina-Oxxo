@@ -78,23 +78,21 @@
     document.getElementById("btnAsignar").addEventListener("click", async () => {
         const semanaSeleccionada = "@(Model.SemanaSeleccionada != DateTime.MinValue ? Model.SemanaSeleccionada.ToString("yyyy-MM-dd") : "")";
         const id_usuario = @Model.id_usuario;
-        
+
         if (!semanaSeleccionada || semanaSeleccionada === "") {
             alert("Por favor selecciona una semana válida primero");
             return;
         }
 
-        console.log("Semana seleccionada:", semanaSeleccionada);
-        console.log("ID Usuario:", id_usuario);
-
         const updates = [];
-        let hasChanges = false;
-        
+
         document.querySelectorAll("tbody tr").forEach(row => {
             const empleado = row.getAttribute("data-empleado");
             const horario = row.querySelector('td:nth-child(2)').textContent;
-            
+
             const turnoData = {
+                empleado: empleado,
+                horario: horario,
                 lunes: row.querySelector('[data-dia="lunes"]').checked,
                 martes: row.querySelector('[data-dia="martes"]').checked,
                 miercoles: row.querySelector('[data-dia="miercoles"]').checked,
@@ -103,13 +101,9 @@
                 sabado: row.querySelector('[data-dia="sabado"]').checked,
                 domingo: row.querySelector('[data-dia="domingo"]').checked
             };
-            
-            console.log(Datos para ${empleado}:, turnoData);
-            
-            // Cambiar la ruta del API - usar 'Turnos' con mayúscula
-            const url = /api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada};
-            console.log("URL:", url);
-            
+
+            const url = `/api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada}`;
+
             updates.push(
                 fetch(url, {
                     method: "PUT",
@@ -118,37 +112,21 @@
                     },
                     body: JSON.stringify(turnoData)
                 }).then(response => {
-                    console.log(Response status for ${empleado}:, response.status);
                     if (!response.ok) {
                         return response.text().then(text => {
-                            console.error(Error response for ${empleado}:, text);
-                            throw new Error(Error actualizando ${empleado}: Status ${response.status} - ${text});
+                            throw new Error(`Error actualizando ${empleado}: Status ${response.status} - ${text}`);
                         });
                     }
                     return response.json();
-                }).catch(error => {
-                    console.error(Catch error for ${empleado}:, error);
-                    throw error;
                 })
             );
-            
-            hasChanges = true;
         });
-        
-        if (!hasChanges) {
-            alert("No hay cambios para guardar");
-            return;
-        }
-        
-        console.log("Enviando", updates.length, "actualizaciones...");
-        
-        Promise.all(updates).then(results => {
-            console.log("Todos los resultados:", results);
+
+        Promise.all(updates).then(() => {
             alert("Turnos actualizados correctamente");
             location.reload();
         }).catch(error => {
-            console.error("Error general:", error);
-            alert(Error al guardar cambios: ${error.message});
+            alert(`Error al guardar cambios: ${error.message}`);
         });
     });
 </script>

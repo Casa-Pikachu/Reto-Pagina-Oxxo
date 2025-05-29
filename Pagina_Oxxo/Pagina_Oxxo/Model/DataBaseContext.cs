@@ -458,39 +458,32 @@ namespace Pagina_Oxxo.Model{
         
         public IActionResult updateHorario(int id_usuario, string empleado, DateTime semana, Turnos upToDate)
         {
-            Console.WriteLine($"➡️ Ejecutando updateHorario");
-            Console.WriteLine($"ID Usuario: {id_usuario}");
-            Console.WriteLine($"Empleado: '{empleado}'"); // Notar comillas para ver si hay espacios
-            Console.WriteLine($"Semana: {semana:yyyy-MM-dd}");
-            Console.WriteLine($"Turno: Lun={upToDate.lunes}, Mar={upToDate.martes}, Mie={upToDate.miercoles}, Jue={upToDate.jueves}, Vie={upToDate.viernes}, Sab={upToDate.sabado}, Dom={upToDate.domingo}");
+            using var conexion = GetConnection();
+            conexion.Open();
 
-            using (MySqlConnection conexion = GetConnection())
+            using var cmd = new MySqlCommand("updateHorarios", conexion)
             {
-                conexion.Open();
+                CommandType = CommandType.StoredProcedure
+            };
 
-                MySqlCommand cmd = new MySqlCommand("updateHorarios", conexion);
-                cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@userId", id_usuario);
+            cmd.Parameters.AddWithValue("@empleadoAct", empleado);
+            cmd.Parameters.AddWithValue("@hourDate", semana);
+            cmd.Parameters.AddWithValue("@newLun", upToDate.lunes);
+            cmd.Parameters.AddWithValue("@newMar", upToDate.martes);
+            cmd.Parameters.AddWithValue("@newMie", upToDate.miercoles);
+            cmd.Parameters.AddWithValue("@newJue", upToDate.jueves);
+            cmd.Parameters.AddWithValue("@newVie", upToDate.viernes);
+            cmd.Parameters.AddWithValue("@newSab", upToDate.sabado);
+            cmd.Parameters.AddWithValue("@newDom", upToDate.domingo);
 
-                cmd.Parameters.AddWithValue("@userId", id_usuario);
-                cmd.Parameters.AddWithValue("@empleadoAct", empleado);
-                cmd.Parameters.AddWithValue("@hourDate", semana);
-                cmd.Parameters.AddWithValue("@newLun", upToDate.lunes);
-                cmd.Parameters.AddWithValue("@newMar", upToDate.martes);
-                cmd.Parameters.AddWithValue("@newMie", upToDate.miercoles);
-                cmd.Parameters.AddWithValue("@newJue", upToDate.jueves);
-                cmd.Parameters.AddWithValue("@newVie", upToDate.viernes);
-                cmd.Parameters.AddWithValue("@newSab", upToDate.sabado);
-                cmd.Parameters.AddWithValue("@newDom", upToDate.domingo);
+            int filasAfectadas = cmd.ExecuteNonQuery();
 
-                int filasAfectadas = cmd.ExecuteNonQuery();
-
-                Console.WriteLine($"Filas afectadas: {filasAfectadas}");
-
-                return filasAfectadas > 0
-                    ? new OkResult()
-                    : new NotFoundObjectResult("No se actualizó ningún registro");
-            }
+            return filasAfectadas > 0
+                ? new OkResult()
+                : new NotFoundObjectResult("No se actualizó ningún registro");
         }
+
 
         public List<DateTime> GetSemanasDisponibles(int id_usuario)
         {
