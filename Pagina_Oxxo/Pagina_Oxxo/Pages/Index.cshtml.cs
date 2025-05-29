@@ -17,6 +17,10 @@ public class IndexModel : PageModel
 
     private readonly DataBaseContext _context;
     public Usuarios user;
+    public List<Anuncios> anuncios = new List<Anuncios>();
+    public List<Usuarios> top3 = new List<Usuarios>();
+    public List<Recompensas> recompensas = new List<Recompensas>();
+    public Usuarios asesor;
     
     public IndexModel(DataBaseContext context)
     {

@@ -1,0 +1,79 @@
+@page
+@model TiendaModel
+@{
+    ViewData["Title"] = "Tienda";
+   
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="m-0 ms-5">Tienda</h1> <!-- Mueve el título a la derecha -->
+    <div class="card bg-secondary bg-opacity-10 px-3 py-2 rounded-4 shadow-sm me-5">
+        <strong>Monedas: </strong><span>@Model.monedasAmmount</span>
+    </div> <!-- Mueve el cuadro a la izquierda -->
+</div>
+
+
+<style>
+    .center-div {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="center-div">
+    <div class="container rounded-5 card bg-secondary bg-opacity-10 py-3" style="max-width: 900px;">
+
+        <div class="row justify-content-center">
+
+            <div class="row justify-content-center">
+                @foreach (var item in Model.Recompensas)
+                {
+                    <div class="col-sm-4 d-flex justify-content-center">
+                        <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3 text-center">
+                            <img src="@item.imagen_url" class="card-img-top rounded-3 mb-3" alt="@item.nombre_recompensa" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.nombre_recompensa</h5>
+                                <p class="card-text">$@item.precio_recompensa</p>
+                                
+                                @if (item.ya_comprado)
+                                {
+                                    <button class="btn btn-success" disabled>Equipado</button>
+                                }
+                                else if (item.precio_recompensa > Model.monedasAmmount)
+                                {
+                                    <button class="btn btn-secondary" disabled>Monedas insuficientes</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" data-id="@item.id_recompensa">Comprar</button>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center"> <!-- centrado de todo el contenido -->
+      <div class="modal-header justify-content-center border-0">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmar compra</h5>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas comprar este producto?
+      </div>
+      <div class="modal-footer justify-content-center border-0">
+        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger">Confirmar compra</button>
+      </div>
+    </div>
+  </div>
+</div>
