@@ -11,12 +11,10 @@ namespace Pagina_Oxxo.Pages
     {
         private readonly DataBaseContext _context;
         public int MonedasUsuario { get; set; }
-        // Lista que almacenará los productos obtenidos
         public List<Recompensas> Recompensas { get; set; }
         public int id_usuario;
         public int monedasAmmount;
 
-        // Constructor para inyectar el contexto de base de datos
         public TiendaModel(DataBaseContext context)
         {
             _context = context;
@@ -39,6 +37,24 @@ namespace Pagina_Oxxo.Pages
             }
         }
 
+        public IActionResult OnPostComprar(int idRecompensa)
+        {
+            if (HttpContext.Session.GetInt32("id_usuario") is not int idUsuario)
+                return RedirectToPage("/Login");
+
+            bool exito = _context.ComprarRecompensa(idUsuario, idRecompensa);
+
+            if (exito)
+            {
+                TempData["Mensaje"] = "Compra realizada con éxito.";
+            }
+            else
+            {
+                TempData["Error"] = "No tienes suficientes monedas.";
+            }
+
+            return RedirectToPage();
+        }
 
         
     }

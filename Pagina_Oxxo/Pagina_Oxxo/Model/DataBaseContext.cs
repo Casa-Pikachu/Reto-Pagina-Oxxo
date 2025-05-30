@@ -13,7 +13,7 @@ namespace Pagina_Oxxo.Model{
         {
             // DB local Bruno
 
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!;";
         }
 
         private MySqlConnection GetConnection()
@@ -500,6 +500,7 @@ namespace Pagina_Oxxo.Model{
             return semanas;
         }
 
+        // Metodos Angel
         public List<Recompensas> GetAllRecompensas()
         {
             List<Recompensas> ListaItems = new List<Recompensas>();
@@ -523,59 +524,133 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
             return ListaItems;
         }
-        
+
         public List<Recompensas> GetRecompensasConEstadoCompra(int id_usuario)
-       {
-           List<Recompensas> listaRecompensas = new List<Recompensas>();
-           using (MySqlConnection conexion = GetConnection())
-           {
-               conexion.Open();
-               string query = @"
+        {
+            List<Recompensas> listaRecompensas = new List<Recompensas>();
+            using (MySqlConnection conexion = GetConnection())
+            {
+                conexion.Open();
+                string query = @"
                    SELECT r.*,
                        CASE WHEN rc.id_recompensa_comprada IS NOT NULL THEN 1 ELSE 0 END AS comprado
                    FROM recompensas r
                    LEFT JOIN recompensa_comprada rc
                        ON r.id_recompensa = rc.id_recompensa_comprada
                        AND rc.id_usuario = @id_usuario";
-               using (MySqlCommand cmd = new MySqlCommand(query, conexion))
-               {
-                   cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
-                   using (var reader = cmd.ExecuteReader())
-                   {
-                       while (reader.Read())
-                       {
-                           listaRecompensas.Add(new Recompensas
-                           {
-                               id_recompensa = Convert.ToInt32(reader["id_recompensa"]),
-                               nombre_recompensa = reader["nombre_recompensa"].ToString(),
-                               descripcion_recompensa = reader["descripcion_recompensa"].ToString(),
-                               precio_recompensa = Convert.ToInt32(reader["precio_recompensa"]),
-                               imagen_url = reader["imagen_url"].ToString(),
-                               ya_comprado = Convert.ToInt32(reader["comprado"]) == 1
-                           });
-                       }
-                   }
-               }
-           }
-           return listaRecompensas;
-       }
-       public int GetMonedasUsuario(int idUsuario)
-       {
-           using (MySqlConnection conexion = GetConnection())
-           {
-               conexion.Open();
-              
-               string query = "SELECT monedas FROM usuarios WHERE id_usuario = @idUsuario";
-              
-               using (MySqlCommand cmd = new MySqlCommand(query, conexion))
-               {
-                   cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-                   var result = cmd.ExecuteScalar();
-                  
-                   return result != null ? Convert.ToInt32(result) : 0;
-               }
-           }
-       }
+                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            listaRecompensas.Add(new Recompensas
+                            {
+                                id_recompensa = Convert.ToInt32(reader["id_recompensa"]),
+                                nombre_recompensa = reader["nombre_recompensa"].ToString(),
+                                descripcion_recompensa = reader["descripcion_recompensa"].ToString(),
+                                precio_recompensa = Convert.ToInt32(reader["precio_recompensa"]),
+                                imagen_url = reader["imagen_url"].ToString(),
+                                ya_comprado = Convert.ToInt32(reader["comprado"]) == 1
+                            });
+                        }
+                    }
+                }
+            }
+            return listaRecompensas;
+        }
+        public int GetMonedasUsuario(int idUsuario)
+        {
+            using (MySqlConnection conexion = GetConnection())
+            {
+                conexion.Open();
+
+                string query = "SELECT monedas FROM usuarios WHERE id_usuario = @idUsuario";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                    var result = cmd.ExecuteScalar();
+
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+        }
+       
+        public bool ComprarRecompensa(int id_usuario, int id_recompensa)
+        {
+            using (MySqlConnection conexion = GetConnection())
+            {
+                conexion.Open();
+
+                using (MySqlTransaction transaccion = conexion.BeginTransaction())
+                {
+                    try
+                    {
+                        
+                        string queryPrecio = "SELECT precio_recompensa FROM recompensas WHERE id_recompensa = @id_recompensa";
+                        int precio = 0;
+
+                        using (var cmd = new MySqlCommand(queryPrecio, conexion, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@id_recompensa", id_recompensa);
+                            var result = cmd.ExecuteScalar();
+                            if (result == null) return false;
+                            precio = Convert.ToInt32(result);
+                        }
+
+                        
+                        string queryMonedas = "SELECT monedas FROM usuarios WHERE id_usuario = @id_usuario";
+                        int monedas = 0;
+
+                        using (var cmd = new MySqlCommand(queryMonedas, conexion, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
+                            var result = cmd.ExecuteScalar();
+                            if (result == null) return false;
+                            monedas = Convert.ToInt32(result);
+                        }
+
+                        
+                        if (monedas < precio)
+                        {
+                            return false;
+                        }
+
+                        
+                        string insertCompra = @"
+                            INSERT INTO recompensa_comprada (id_usuario, id_recompensa_comprada)
+                            VALUES (@id_usuario, @id_recompensa)";
+                        using (var cmd = new MySqlCommand(insertCompra, conexion, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
+                            cmd.Parameters.AddWithValue("@id_recompensa", id_recompensa);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        
+                        string updateMonedas = "UPDATE usuarios SET monedas = monedas - @precio WHERE id_usuario = @id_usuario";
+                        using (var cmd = new MySqlCommand(updateMonedas, conexion, transaccion))
+                        {
+                            cmd.Parameters.AddWithValue("@precio", precio);
+                            cmd.Parameters.AddWithValue("@id_usuario", id_usuario);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaccion.Commit();
+                        return true;
+                    }
+                    catch
+                    {
+                        transaccion.Rollback();
+                        return false;
+                    }
+                }
+            }
+        }
+
+
 
     }
 }
