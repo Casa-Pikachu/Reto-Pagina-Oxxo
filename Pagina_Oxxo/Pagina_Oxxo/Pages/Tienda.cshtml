@@ -2,78 +2,94 @@
 @model TiendaModel
 @{
     ViewData["Title"] = "Tienda";
-   
 }
 
 <div class="d-flex align-items-center justify-content-between mb-4">
-    <h1 class="m-0 ms-5">Tienda</h1> <!-- Mueve el título a la derecha -->
+    <h1 class="m-0 ms-5">Tienda</h1>
     <div class="card bg-secondary bg-opacity-10 px-3 py-2 rounded-4 shadow-sm me-5">
         <strong>Monedas: </strong><span>@Model.monedasAmmount</span>
-    </div> <!-- Mueve el cuadro a la izquierda -->
+    </div>
 </div>
 
 
-<style>
-    .center-div {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-</style>
 
 <div class="center-div">
     <div class="container rounded-5 card bg-secondary bg-opacity-10 py-3" style="max-width: 900px;">
-
         <div class="row justify-content-center">
-
-            <div class="row justify-content-center">
-                @foreach (var item in Model.Recompensas)
-                {
-                    <div class="col-sm-4 d-flex justify-content-center">
-                        <div class="card bg-secondary bg-opacity-10 m-3 rounded-4 p-3 text-center">
-                            <img src="@item.imagen_url" class="card-img-top rounded-3 mb-3" alt="@item.nombre_recompensa" style="height: 150px; object-fit: cover;">
-                            <div class="card-body">
+            @foreach (var item in Model.Recompensas)
+            {
+                <div class="col-sm-4 d-flex justify-content-center">
+                    <div class="card bg-white m-3 rounded-4 p-3 text-center shadow-sm d-flex flex-column" style="height: 350px; width: 100%;">
+                        <div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: white;">
+                            <img src="@item.imagen_url"
+                                 alt="@item.nombre_recompensa"
+                                 style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
                                 <h5 class="card-title">@item.nombre_recompensa</h5>
                                 <p class="card-text">$@item.precio_recompensa</p>
-                                
+                            </div>
+
+                            <div>
                                 @if (item.ya_comprado)
                                 {
-                                    <button class="btn btn-success" disabled>Equipado</button>
+                                    <button class="btn btn-success w-100" disabled>Comprado</button>
                                 }
                                 else if (item.precio_recompensa > Model.monedasAmmount)
                                 {
-                                    <button class="btn btn-secondary" disabled>Monedas insuficientes</button>
+                                    <button class="btn btn-secondary w-100" disabled>Monedas insuficientes</button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" data-id="@item.id_recompensa">Comprar</button>
+                                    <form id="formCompra-@item.id_recompensa" method="post" asp-page-handler="Comprar">
+                                        <input type="hidden" name="idRecompensa" value="@item.id_recompensa" />
+                                        <button type="button" class="btn btn-danger w-100"
+                                                onclick="abrirModal(@item.id_recompensa, '@item.nombre_recompensa')">Comprar</button>
+                                    </form>
                                 }
-
                             </div>
                         </div>
                     </div>
-                }
-            </div>
-
-
+                </div>
+            }
         </div>
     </div>
 </div>
 
 
+
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center"> <!-- centrado de todo el contenido -->
-      <div class="modal-header justify-content-center border-0">
-        <h5 class="modal-title" id="confirmModalLabel">Confirmar compra</h5>
-      </div>
-      <div class="modal-body">
-        ¿Estás seguro de que deseas comprar este producto?
-      </div>
-      <div class="modal-footer justify-content-center border-0">
-        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger">Confirmar compra</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header justify-content-center border-0">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar compra</h5>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas comprar <strong id="nombreProductoModal">este producto</strong>?
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarCompra()">Confirmar compra</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
+
+<script>
+    let idFormActual = null;
+
+    function abrirModal(idRecompensa, nombreProducto) {
+        idFormActual = document.getElementById(`formCompra-${idRecompensa}`);
+        document.getElementById("nombreProductoModal").innerText = nombreProducto;
+        let modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        modal.show();
+    }
+
+    function confirmarCompra() {
+        if (idFormActual) {
+            idFormActual.submit();
+        }
+    }
+</script>

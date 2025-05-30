@@ -3,10 +3,8 @@
 @{
     ViewData["Title"] = "Inicio";
 }
-<div class="row mb-3 align-items-center">
-    <div class="col-auto">
-        <h1>@Model.mensaje</h1>
-    </div>
+<div class="col-auto" style="padding-left: 85px;">
+    <h1>@Model.mensaje</h1>
 </div>
 
 
@@ -58,30 +56,36 @@
                     </div>
                 </div>
 
+                
                 @* Tienda *@
                 <div class="row mt-4">
                     <div class="col">
-                        <div class="tarjeta-inicio card text-center">
-                            <h5 class="card-header">Tienda</h5>
-                            <div class="card-body d-flex justify-content-around">
-                                <div>
-                                    <img src="~/imagen/recompensa1.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                        <a asp-page="/Tienda" style="text-decoration: none; color: inherit;">
+                            <div class="tarjeta-inicio card text-center">
+                                <h5 class="card-header">Tienda</h5>
+                                <div class="card-body d-flex justify-content-around">
+                                    <div>
+                                        <img src="~/imagen/Tienda/Punk.png" alt="Item" class="img-recompensa img-fluid">
+                                        <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                                    </div>
+
+                                    <div>
+                                        <img src="~/imagen/Tienda/RedHead.png" alt="Item" class="img-recompensa img-fluid">
+                                        <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
+                                    </div>          
+
+                                    <div>
+                                        <img src="~/imagen/Tienda/Coloured.png" alt="Item" class="img-recompensa img-fluid">
+                                        <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
+                                    </div>          
                                 </div>
-
-                                <div>
-                                    <img src="~/imagen/recompensa2.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
-                                </div>          
-
-                                <div>
-                                    <img src="~/imagen/recompensa3.png" alt="Item" class="img-recompensa img-fluid">
-                                    <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
-                                </div>          
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
+
+
+
             </div>
 
             <div class="col-4">
