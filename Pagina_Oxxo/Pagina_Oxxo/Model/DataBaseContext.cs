@@ -11,9 +11,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext()
         {
-            // DB local Bruno
-
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!;";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=3sNoopyG;";
         }
 
         private MySqlConnection GetConnection()
@@ -389,6 +387,7 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
+//Natalia Cavazos
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -407,14 +406,43 @@ namespace Pagina_Oxxo.Model{
                     usuario.id_usuario = Convert.ToInt32(reader["id_usuario"]);
                     usuario.nombre = reader["nombre"].ToString();
                     usuario.apellido = reader["apellido"].ToString();
-                    usuario.monedas = Convert.ToInt32(reader["monedas"]);
-                    usuario.experiencia = Convert.ToInt32(reader["experiencia"]);
-                    usuario.puntos = Convert.ToInt32(reader["puntos"]);
                 }
             }
 
             conexion.Close();
             return usuario;
+        }
+
+        public List<Reconocimientos> GetReconocimientos(string nombre, string apellido)
+        {
+            List<Reconocimientos> ListaReconocimientos = new List<Reconocimientos>();
+
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM RECONOCIMIENTOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+
+            Reconocimientos reconocimiento;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    reconocimiento = new Reconocimientos();
+
+                    reconocimiento.id_reconocimientos = Convert.ToInt32(reader["id_reconocimientos"]);
+                    reconocimiento.contenido = reader["contenido"].ToString();
+                    reconocimiento.fecha_mensaje = Convert.ToDateTime(reader["fecha_mensaje"]).ToString("dd/MM/yyyy HH:mm:ss");
+                    reconocimiento.transmisor = reader["transmisor"].ToString();
+                    reconocimiento.id_icono = Convert.ToInt32(reader["id_icono"]);
+                    reconocimiento.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    ListaReconocimientos.Add(reconocimiento);
+                }
+            }
+
+            conexion.Close();
+            return ListaReconocimientos;
+        
         }
 
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)

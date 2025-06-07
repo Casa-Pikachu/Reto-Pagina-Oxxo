@@ -43,7 +43,7 @@
 }
 
 .anuncio{
-  height: 50%;
+  height: auto;
   border: 1px solid #ccc; 
   padding: 10px;
   margin: 10px;
