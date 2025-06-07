@@ -34,7 +34,7 @@
 #nat{
   font-size: 1.25rem;
   font-weight: bold;
-  color: #5c000f;
+  color: #000000;
 }
 
 .medallas-iconos img {
@@ -58,4 +58,8 @@
     overflow-y: auto;
     padding: 8px;
     border: 2px solid #ccc; 
+}
+
+#btnNat{
+    margin-top: 10px;
 }

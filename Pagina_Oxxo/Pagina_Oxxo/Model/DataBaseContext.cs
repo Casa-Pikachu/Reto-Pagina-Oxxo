@@ -406,6 +406,7 @@ namespace Pagina_Oxxo.Model{
                     usuario.id_usuario = Convert.ToInt32(reader["id_usuario"]);
                     usuario.nombre = reader["nombre"].ToString();
                     usuario.apellido = reader["apellido"].ToString();
+                    usuario.id_tienda = Convert.ToInt32(reader["id_tienda"]);
                 }
             }
 
@@ -444,6 +445,77 @@ namespace Pagina_Oxxo.Model{
             return ListaReconocimientos;
         
         }
+        
+        public List<Usuarios> GetAllUsersByTienda(int id_tienda, int id_usuario)
+        {
+            List<Usuarios> ListaUsuarios = new List<Usuarios>();
+
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_usuario != {id_usuario}", conexion);
+
+            Usuarios usr1;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    usr1 = new Usuarios();
+
+                    usr1.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    usr1.nombre = reader["nombre"].ToString();
+                    usr1.apellido = reader["apellido"].ToString();
+
+                    ListaUsuarios.Add(usr1);
+                }
+            }
+
+            conexion.Close();
+            return ListaUsuarios;
+        }
+
+
+        public void InsertarReconocimiento(string transmisor, string contenido, int id_icono, int receptor)
+        {
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO reconocimientos (transmisor, contenido, id_icono, id_usuario) VALUES (@transmisor, @contenido, @id_icono, @id_usuario)", conexion);
+            cmd.Parameters.AddWithValue("@transmisor", transmisor);
+            cmd.Parameters.AddWithValue("@contenido", contenido);
+            cmd.Parameters.AddWithValue("@id_icono", id_icono); 
+            cmd.Parameters.AddWithValue("@id_usuario", receptor);
+
+            cmd.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        /*
+        public bool InsertarReconocimiento(int transmisor, string contenido, int id_icono, string receptor)
+        {
+            try
+            {
+                MySqlConnection conexion = GetConnection();
+                conexion.Open();
+
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO reconocimientos (transmisor, contenido, id_icono, id_usuario) VALUES (@transmisor, @contenido, @id_icono, @id_usuario)", conexion);
+                cmd.Parameters.AddWithValue("@transmisor", transmisor);
+                cmd.Parameters.AddWithValue("@contenido", contenido);
+                cmd.Parameters.AddWithValue("@id_icono", id_icono); 
+                cmd.Parameters.AddWithValue("@id_usuario", receptor);
+
+                cmd.ExecuteNonQuery();
+                conexion.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        */
+                        
 
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
         {

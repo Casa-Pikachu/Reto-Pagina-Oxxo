@@ -54,6 +54,7 @@ public class IndexModel : PageModel
             HttpContext.Session.SetString("apellido", user.apellido);
             HttpContext.Session.SetString("username", user.nombre + " " + user.apellido); 
             HttpContext.Session.SetInt32("id_usuario", user.id_usuario);
+            HttpContext.Session.SetInt32("id_tienda", user.id_tienda);
             Response.Redirect("Homepage");
         }
 

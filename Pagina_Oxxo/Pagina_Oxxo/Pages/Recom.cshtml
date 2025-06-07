@@ -48,14 +48,37 @@
     <div class="row mt-4">
         <div class="col-md-1"></div>
         <div class="col-md-5">
-            <div class="card text-center p-3">
-                <h2><strong>Nueva medalla</strong></h2>
+            <div class="card text-center">
+                <h2 class="card-header" id="nat">Nueva medalla</h2>
                 <div class="card-body" id="cardBodyNAT">
+                    <form method="post">
+                        <div id="medallasContainer">
+                            <label for="medallaSelect" class="form-label">Medalla</label>
+                            <select id="medallaSelect" class="form-select w-100 mx-auto mb-4" name="medallaSelect">
+                                <option value="1">Buen Ejemplo</option>
+                                <option value="2">Líder Inspirador</option>
+                                <option value="3">Compañero Ideal</option>
+                            </select>
+                            <label for="usuarioSelect" class="form-label">Compañero</label>
+                            <select id="usuarioSelect" class="form-select w-100 mx-auto mb-4" name="usuarioSelect">
+                                @foreach (var item in Model.usuariosTienda)
+                                {
+                                    <option value="@item.id_usuario">@item.nombre @item.apellido</option>
+                                }
+                            </select>
+                            <label for="contenidoMedalla" class="form-label">Mensaje</label>
+                            <textarea class="form-control" id="contenidoMedalla" name="contenidoMedalla" rows="3"></textarea>
+                            <div class="d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" id="btnNAT" type="submit">Asignar medalla</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="col-md-5">
-            <div class="card text-center p-3">
-                <h2><strong>Mis medallas</strong></h2>
+            <div class="card text-center">
+                <h2 class="card-header" id="nat">Mis medallas</h2>
                 <div class="card-body" id="cardBodyNAT">                       
                     <div class="scrollable-div" id="medallasContainer">
                         @foreach (var item in Model.reconocimientos)
