@@ -5,127 +5,85 @@
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     body {
         background-color: #fff9ee;
     }
 </style>
 
-<div>
-    <h1>Turnos y Asistencias</h1>
-</div>
-
-<div class="row mb-3 align-items-center">
-    <div class="col-auto">
-        <h2 class="mb-0">Semana del</h2>
+<div class="container text-start">
+    <div>
+        <h1>Turnos y Asistencias</h1>
     </div>
-    <div class="col-auto">
-        <form method="get">
-            <select name="SemanaSeleccionada" class="custom-select" onchange="this.form.submit()">
-                <option value="" selected="@(Model.SemanaSeleccionada == DateTime.MinValue)">Elige Semana</option>
-                @foreach (var semana in Model.FechasUnicas)
-                {
-                    var valor = semana.ToString("yyyy-MM-dd");
-                    var texto = semana.ToString("dd 'de' MMMM", new System.Globalization.CultureInfo("es-MX"));
-                    <option value="@valor" selected="@(semana == Model.SemanaSeleccionada)">
-                        @texto
-                    </option>
-                }
-            </select>
-        </form>
-    </div>
-    <div class="col-auto ml-auto mt-2">
-        <button id="btnAsignar" type="button" class="btn btn-danger">Asignar Turno</button>
-    </div>
-</div>
 
-<div class="table-responsive">
-    <table class="table text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th>Empleado</th>
-                <th>Horario</th>
-                <th>Lun</th>
-                <th>Mar</th>
-                <th>Mié</th>
-                <th>Jue</th>
-                <th>Vie</th>
-                <th>Sáb</th>
-                <th>Dom</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model.TurnosLista)
-            {
-                <tr data-empleado="@t.empleado">
-                    <td>@t.empleado</td>
-                    <td>@t.horario</td>
-                    <td><input type="checkbox" data-dia="lunes" @(t.lunes ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="martes" @(t.martes ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="miercoles" @(t.miercoles ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="jueves" @(t.jueves ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="viernes" @(t.viernes ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="sabado" @(t.sabado ? "checked" : "") /></td>
-                    <td><input type="checkbox" data-dia="domingo" @(t.domingo ? "checked" : "") /></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<script>
-    document.getElementById("btnAsignar").addEventListener("click", async () => {
-        const semanaSeleccionada = "@(Model.SemanaSeleccionada != DateTime.MinValue ? Model.SemanaSeleccionada.ToString("yyyy-MM-dd") : "")";
-        const id_usuario = @Model.id_usuario;
-        if (!semanaSeleccionada || semanaSeleccionada === "") {
-            alert("Por favor selecciona una semana válida primero");
-            return;
-        }
-
-        const updates = [];
-
-        document.querySelectorAll("tbody tr").forEach(row => {
-            const empleado = row.getAttribute("data-empleado");
-            const horario = row.querySelector('td:nth-child(2)').textContent;
-
-            const turnoData = {
-                empleado: empleado,
-                horario: horario,
-                lunes: row.querySelector('[data-dia="lunes"]').checked,
-                martes: row.querySelector('[data-dia="martes"]').checked,
-                miercoles: row.querySelector('[data-dia="miercoles"]').checked,
-                jueves: row.querySelector('[data-dia="jueves"]').checked,
-                viernes: row.querySelector('[data-dia="viernes"]').checked,
-                sabado: row.querySelector('[data-dia="sabado"]').checked,
-                domingo: row.querySelector('[data-dia="domingo"]').checked
-            };
-
-            const url = `/api/Turnos/${id_usuario}/${encodeURIComponent(empleado)}/${semanaSeleccionada}`;
-
-            updates.push(
-                fetch(url, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(turnoData)
-                }).then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(`Error actualizando ${empleado}: Status ${response.status} - ${text}`);
-                        });
+    <div class="row mb-3 align-items-center">
+        <div class="col-auto">
+            <h2 class="mb-0">Semana del</h2>
+        </div>
+        <div class="col-auto">
+            <form method="get">
+                <select name="SemanaSeleccionada" class="custom-select" onchange="this.form.submit()">
+                    <option value="" selected="@(Model.SemanaSeleccionada == DateTime.MinValue)">Elige Semana</option>
+                    @foreach (var semana in Model.FechasUnicas)
+                    {
+                        var valor = semana.ToString("yyyy-MM-dd");
+                        var texto = semana.ToString("dd 'de' MMMM 'de' yyyy");
+                        <option value="@valor" selected="@(Model.SemanaSeleccionada == semana)">
+                            @texto
+                        </option>
                     }
-                    return response.json();
-                })
-            );
-        });
+                </select>
+            </form>
+        </div>
+    </div>
 
-        Promise.all(updates).then(() => {
-            alert("Turnos actualizados correctamente");
-            location.reload();
-        }).catch(error => {
-            alert(`Error al guardar cambios: ${error.message}`);
-        });
-    });
-</script>
+    @if (Model.TurnosLista.Count > 0)
+    {
+        <form method="post">
+            <input type="hidden" asp-for="SemanaSeleccionada" />
+
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Horario</th>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miércoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                        <th>Sábado</th>
+                        <th>Domingo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.TurnosLista.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input asp-for="TurnosActualizados[i].empleado" value="@Model.TurnosLista[i].empleado" class="form-control" readonly />
+                            </td>
+                            <td>
+                                <input asp-for="TurnosActualizados[i].horario" value="@Model.TurnosLista[i].horario" class="form-control" />
+                            </td>
+                            <td><input asp-for="TurnosActualizados[i].lunes" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].lunes" /></td>
+                            <td><input asp-for="TurnosActualizados[i].martes" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].martes" /></td>
+                            <td><input asp-for="TurnosActualizados[i].miercoles" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].miercoles" /></td>
+                            <td><input asp-for="TurnosActualizados[i].jueves" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].jueves" /></td>
+                            <td><input asp-for="TurnosActualizados[i].viernes" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].viernes" /></td>
+                            <td><input asp-for="TurnosActualizados[i].sabado" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].sabado" /></td>
+                            <td><input asp-for="TurnosActualizados[i].domingo" type="checkbox" class="form-check-input" checked="@Model.TurnosLista[i].domingo" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-muted">Selecciona una semana para ver y editar turnos.</p>
+    }
+</div>

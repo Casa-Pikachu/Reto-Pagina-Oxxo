@@ -13,7 +13,7 @@ namespace Pagina_Oxxo.Model{
         {
             // DB local Bruno
 
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!;";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
         }
 
         private MySqlConnection GetConnection()
@@ -388,7 +388,7 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
             return usuario;
         }
-
+        // NAT
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -417,6 +417,7 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
+        // DIEGO
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
         {
             List<Turnos> myListaTurnos = new List<Turnos>();
