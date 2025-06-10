@@ -13,6 +13,10 @@ namespace Pagina_Oxxo.Model{
         {
             // DB local Bruno
             ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!";
+            //ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
+
+           // ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
+
         }
 
         private MySqlConnection GetConnection()
@@ -388,7 +392,9 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
+
 //Natalia Cavazos
+
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -415,6 +421,8 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
             return usuario;
         }
+
+        // DIEGO
 
         public List<Reconocimientos> GetReconocimientos(string nombre, string apellido)
         {
