@@ -12,11 +12,10 @@ namespace Pagina_Oxxo.Model{
         public DataBaseContext()
         {
             // DB local Bruno
-
-
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!";
             //ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
 
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
+           // ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
 
         }
 

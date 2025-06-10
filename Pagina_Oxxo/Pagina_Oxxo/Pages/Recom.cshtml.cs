@@ -36,7 +36,7 @@ public class RecomModel : PageModel
         if (usuarioSelectId == 0)
         {
             TempData["MensajeFalta"] = "Debe iniciar sesión para enviar reconocimientos.";
-            return RedirectToPage("/Login");  // O donde corresponda
+            return RedirectToPage("/Index"); 
         }
 
         string receptorStr = Request.Form["usuarioSelect"];
