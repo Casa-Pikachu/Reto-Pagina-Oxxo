@@ -1,5 +1,6 @@
 using Pagina_Oxxo.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,15 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".data"] = "application/octet-stream";
+provider.Mappings[".wasm"] = "application/wasm";
+app.UseStaticFiles(new StaticFileOptions()
+{
+    ContentTypeProvider = provider,
+});
+
 app.UseSession();
 
 
