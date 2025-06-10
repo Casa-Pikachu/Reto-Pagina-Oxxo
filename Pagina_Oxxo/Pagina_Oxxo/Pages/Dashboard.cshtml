@@ -1,9 +1,6 @@
 @page
-@model DashboardModel
-@{
-    ViewData["Title"] = "Analíticas";
-}
+@model Pagina_Oxxo.Pages.DashboardModel
 
-<div class="text-center">
-    <iframe width="1200" height="600" src="https://lookerstudio.google.com/embed/reporting/3f514a77-776c-4d49-9c01-ab7b9498605d/page/OvYLF" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-</div>
+<iframe src="@ViewData["lookerUrl"]" width="100%" height="800" frameborder="0" allowfullscreen></iframe>
+
+
