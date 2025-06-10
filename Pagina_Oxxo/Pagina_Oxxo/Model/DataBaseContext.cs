@@ -12,7 +12,6 @@ namespace Pagina_Oxxo.Model{
         public DataBaseContext()
         {
             // DB local Bruno
-
             ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
         }
 
@@ -389,6 +388,7 @@ namespace Pagina_Oxxo.Model{
             return usuario;
         }
 
+//Natalia Cavazos
         public Usuarios CheckUsrId_Password(string usuario_correo, string usuario_password)
         {
             Usuarios usuario = new Usuarios();
@@ -407,15 +407,110 @@ namespace Pagina_Oxxo.Model{
                     usuario.id_usuario = Convert.ToInt32(reader["id_usuario"]);
                     usuario.nombre = reader["nombre"].ToString();
                     usuario.apellido = reader["apellido"].ToString();
-                    usuario.monedas = Convert.ToInt32(reader["monedas"]);
-                    usuario.experiencia = Convert.ToInt32(reader["experiencia"]);
-                    usuario.puntos = Convert.ToInt32(reader["puntos"]);
+                    usuario.id_tienda = Convert.ToInt32(reader["id_tienda"]);
+                    usuario.id_rol = Convert.ToInt32(reader["id_rol"]);
                 }
             }
 
             conexion.Close();
             return usuario;
         }
+
+        public List<Reconocimientos> GetReconocimientos(string nombre, string apellido)
+        {
+            List<Reconocimientos> ListaReconocimientos = new List<Reconocimientos>();
+
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM RECONOCIMIENTOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+
+            Reconocimientos reconocimiento;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    reconocimiento = new Reconocimientos();
+
+                    reconocimiento.id_reconocimientos = Convert.ToInt32(reader["id_reconocimientos"]);
+                    reconocimiento.contenido = reader["contenido"].ToString();
+                    reconocimiento.fecha_mensaje = Convert.ToDateTime(reader["fecha_mensaje"]).ToString("dd/MM/yyyy HH:mm:ss");
+                    reconocimiento.transmisor = reader["transmisor"].ToString();
+                    reconocimiento.id_icono = Convert.ToInt32(reader["id_icono"]);
+                    reconocimiento.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    ListaReconocimientos.Add(reconocimiento);
+                }
+            }
+
+            conexion.Close();
+            return ListaReconocimientos;
+        
+        }
+        
+        public List<Usuarios> GetAllUsersByTienda(int id_tienda, int id_usuario)
+        {
+            List<Usuarios> ListaUsuarios = new List<Usuarios>();
+
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_usuario != {id_usuario}", conexion);
+
+            Usuarios usr1;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    usr1 = new Usuarios();
+
+                    usr1.id_usuario = Convert.ToInt32(reader["id_usuario"]);
+                    usr1.nombre = reader["nombre"].ToString();
+                    usr1.apellido = reader["apellido"].ToString();
+
+                    ListaUsuarios.Add(usr1);
+                }
+            }
+
+            conexion.Close();
+            return ListaUsuarios;
+        }
+
+
+        public void InsertarReconocimiento(string transmisor, string contenido, int id_icono, int receptor)
+        {
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO reconocimientos (transmisor, contenido, id_icono, id_usuario) VALUES (@transmisor, @contenido, @id_icono, @id_usuario)", conexion);
+            cmd.Parameters.AddWithValue("@transmisor", transmisor);
+            cmd.Parameters.AddWithValue("@contenido", contenido);
+            cmd.Parameters.AddWithValue("@id_icono", id_icono); 
+            cmd.Parameters.AddWithValue("@id_usuario", receptor);
+
+            cmd.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public void InsertarAnuncio(string contenido, int receptor)
+        {
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
+
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO anuncios (contenido, id_usuario) VALUES (@contenido, @id_usuario)", conexion);
+            cmd.Parameters.AddWithValue("@contenido", contenido);
+            cmd.Parameters.AddWithValue("@id_usuario", receptor);
+
+            cmd.ExecuteNonQuery();
+            conexion.Close();
+
+        }
+
+        
+
+     
+                        
 
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
         {
