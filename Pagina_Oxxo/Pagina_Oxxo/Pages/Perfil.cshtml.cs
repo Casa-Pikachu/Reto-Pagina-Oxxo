@@ -6,7 +6,7 @@ namespace Pagina_Oxxo.Pages;
 
 public class PerfilModel : PageModel
 {
-     [BindProperty] //Conexión entre base de datos
+    [BindProperty] //Conexión entre base de datos
     public string fotoP { get; set;} 
     [BindProperty]
     public string camino { get; set;}

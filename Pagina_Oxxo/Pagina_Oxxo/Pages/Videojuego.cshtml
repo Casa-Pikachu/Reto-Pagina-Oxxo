@@ -1,0 +1,257 @@
+@page
+@model VideojuegoModel
+@{
+    ViewData["Title"] = "Videojuego";
+}
+
+<div class="principal-vj text-center"> 
+    <h1 class="display-4 text-center">Reparación Paranormal</h1>
+
+    <div class="container">
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasHistoria" role="button" aria-controls="offcanvasHistoria">
+                    Historia
+                </a>                
+            </div>
+
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasPersonajes" role="button" aria-controls="offcanvasPersonajes">
+                    Personajes
+                </a>
+            </div>
+        </div>
+
+        <h2 class="text-center">Controles</h2>
+        
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasPantallaPrincipal" role="button" aria-controls="offcanvasPantallaPrincipal">
+                    Pantalla principal
+                </a>
+            </div>
+
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasMini" role="button" aria-controls="offcanvasMini">
+                    Minijuegos
+                </a>
+            </div>
+        </div>
+
+
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <div>Videojuego</div>
+            </div>
+        </div>
+
+
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasLicencias" role="button" aria-controls="offcanvasLicencias">
+                    Licencias de uso
+                </a>
+            </div>
+
+            <div class="col-auto">
+                <a class="btn btn-danger" data-bs-toggle="offcanvas" href="#offcanvasCreditos" role="button" aria-controls="offcanvasCreditos">
+                    Créditos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas Historia *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasHistoria" aria-labelledby="historiaLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="historiaLabel">Historia</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaHistoria != null && Model.listaHistoria.Count > 0)
+                {
+                    foreach (var item in Model.listaHistoria)
+                    {
+                        <p>@item.descripcion_instruccion</p>
+                    }
+                    <div class="text-center">
+                            <img src="~/imagen/instrucciones/historia.png" alt="Historia" class="img-fluid" style="width: 300px;">
+                    </div>
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas Personajes *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasPersonajes" aria-labelledby="personajesLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="personajesLabel">Personajes</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaPersonajes != null && Model.listaPersonajes.Count > 0)
+                {
+                    @if (Model.listaPersonajes.Count > 0)
+                    {
+                        <p>@Model.listaPersonajes[0].descripcion_instruccion</p>
+                    }
+                    @if (Model.listaPersonajes.Count > 1)
+                    {
+                        <p>@Model.listaPersonajes[1].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/fantasma.png" alt="Fantasma" class="img-fluid" style="width: 100px;">
+                        </div>
+                        <br>
+                    }
+                    @if (Model.listaPersonajes.Count > 2)
+                    {
+                        <p>@Model.listaPersonajes[2].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/clientes.png" alt="Clientes" class="img-fluid" style="width: 300px;">
+                        </div>
+                        <br>
+                    }
+                    @if (Model.listaPersonajes.Count > 3)
+                    {
+                        <p>@Model.listaPersonajes[3].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/you.png" alt="Jugador" class="img-fluid" style="width: 100px;">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas Pantalla Principal *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasPantallaPrincipal" aria-labelledby="pantallaPrincipalLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="pantallaPrincipalLabel">Pantalla principal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaPrincipal != null && Model.listaPrincipal.Count > 0)
+                {
+                    @if (Model.listaPrincipal.Count > 0)
+                    {
+                        <p>@Model.listaPrincipal[0].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/stats.png" alt="Exclamacion" class="img-fluid" style="width: 300px;">
+                        </div>
+                        <br>
+                    }
+                    @if (Model.listaPrincipal.Count > 1)
+                    {
+                        <p>@Model.listaPrincipal[1].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/stats.png" alt="Exclamacion" class="img-fluid" style="width: 300px;">
+                        </div>
+                        <br>
+                    }
+                    @if (Model.listaPrincipal.Count > 2)
+                    {
+                        <p>@Model.listaPrincipal[2].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/exclamacion.png" alt="Exclamacion" class="img-fluid" style="width: 100px;">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas Minijuego 1 *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMini" aria-labelledby="miniLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="miniLabel">Minijuegos</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaMinijuego != null && Model.listaMinijuego.Count > 0)
+                {
+                    @if (Model.listaMinijuego.Count > 0)
+                    {
+                        <p>@Model.listaMinijuego[0].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/dragdrop.png" alt="Drag and drop" class="img-fluid" style="width: 300px;">
+                        </div>
+                        <br>
+                    }
+                    @if (Model.listaMinijuego.Count > 1)
+                    {
+                        <p>@Model.listaMinijuego[1].descripcion_instruccion</p>
+                        <div class="text-center">
+                            <img src="~/imagen/instrucciones/botones.png" alt="Botones" class="img-fluid" style="width: 150px;">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas Licencias *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLicencias" aria-labelledby="licenciasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="licenciasLabel">Licencias de uso</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaLicencias != null && Model.listaLicencias.Count > 0)
+                {
+                    foreach (var item in Model.listaLicencias)
+                    {
+                        <p>@item.descripcion_instruccion</p>
+                    }
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* Offcanvas creditos *@
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCreditos" aria-labelledby="creditosLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="creditosLabel">Créditos</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="text-justify">
+                @if (Model.listaCreditos != null && Model.listaCreditos.Count > 0)
+                {
+                    foreach (var item in Model.listaCreditos)
+                    {
+                        <p>@item.descripcion_instruccion</p>
+                    }
+                }
+                else
+                {
+                    <p>No hay información disponible.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,7 @@ namespace Pagina_Oxxo.Model{
         {
             // DB local Bruno
 
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!;";
+            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
         }
 
         private MySqlConnection GetConnection()
@@ -650,7 +650,33 @@ namespace Pagina_Oxxo.Model{
             }
         }
 
+        public List<Instrucciones> GetInstruction(string titulo)
+        {
+            List<Instrucciones> listaInstrucciones = new List<Instrucciones>();
 
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
 
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM INSTRUCCIONES WHERE titulo_instruccion = \"{titulo}\"", conexion);
+
+            Instrucciones instruccion;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    instruccion = new Instrucciones();
+
+                    instruccion.id_instruccion = Convert.ToInt32(reader["id_instruccion"]);
+                    instruccion.titulo_instruccion = reader["titulo_instruccion"].ToString();
+                    instruccion.descripcion_instruccion = reader["descripcion_instruccion"].ToString();
+
+                    listaInstrucciones.Add(instruccion);
+                }
+            }
+
+            conexion.Close();
+            return listaInstrucciones;
+        }
     }
 }
