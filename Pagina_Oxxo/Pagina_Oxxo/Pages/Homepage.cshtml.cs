@@ -25,7 +25,7 @@ public class HomepageModel : PageModel
     public void OnGet()
     {
         int? userId = HttpContext.Session.GetInt32("id_usuario");
-        if (userId.HasValue)
+        if (userId != null)
         {
             user = _context.GetUserInfo(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
             anuncios = _context.GetAnuncios(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
@@ -35,9 +35,11 @@ public class HomepageModel : PageModel
             textTienda_Asesor = tienda_asesor();
             mensaje = "Bienvenido, " + HttpContext.Session.GetString("username");
         }
+
         else
         {
             Response.Redirect("Index");
+            return;
         }
     }
     

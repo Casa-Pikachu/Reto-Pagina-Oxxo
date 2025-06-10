@@ -23,10 +23,21 @@ namespace Pagina_Oxxo.Pages
         // Se ejecuta al cargar la página
         public void OnGet()
         {
-            PrimerLugar = _context.GetLugarMedalla(1);
-            SegundoLugar = _context.GetLugarMedalla(2);
-            TercerLugar = _context.GetLugarMedalla(3);
-            ListaUsuarios = _context.GetElse();
+            int? userId = HttpContext.Session.GetInt32("id_usuario");
+            if (userId != null)
+            {
+                // Obtiene los datos del podio y los usuarios
+                PrimerLugar = _context.GetLugarMedalla(1);
+                SegundoLugar = _context.GetLugarMedalla(2);
+                TercerLugar = _context.GetLugarMedalla(3);
+                ListaUsuarios = _context.GetElse();
+            }
+            else
+            {
+                Response.Redirect("Index");
+            }
+            
+            
         }
     }
 }

@@ -1,0 +1,157 @@
+@page
+@model HomepageAsesorModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+<div class="col-auto" style="padding-left: 85px;">
+    <h1>@(Model?.mensaje ?? "Bienvenido")</h1>
+</div>
+
+<div class="principal center-myDiv mt-4">
+    <div class="tarjetas container">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    @* Podio *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Top 3</h5>
+                            <div class="card-body">
+                                <div class="podio-inicio">
+                                    @if (Model?.top3 != null && Model.top3.Count > 0)
+                                    {
+                                        <div class="lugar-podio">
+                                            <p><strong>#1</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[0].nombre</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model?.top3 != null && Model.top3.Count > 1)
+                                    {
+                                        <div class="lugar-podio d-flex align-items-center">
+                                            <p><strong>#2</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[1].nombre</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model?.top3 != null && Model.top3.Count > 2)
+                                    {
+                                        <div class="lugar-podio d-flex align-items-center">
+                                            <p><strong>#3</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[2].nombre</strong></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Monedas *@
+                    <div class="col-6">
+                        <div class="tarjeta-inicio card text-center">
+                            <h5 class="card-header">Mis monedas</h5>
+                            <div class="card-body">
+                                <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
+                                <h3>
+                                    <strong>
+                                        @(Model?.user != null ? $"${Model.user.monedas}" : "$0")
+                                    </strong>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* Tienda *@
+                <div class="row mt-4">
+                    <div class="col">
+                        <a asp-page="/Tienda" style="text-decoration: none; color: inherit;">
+                            <div class="tarjeta-inicio card text-center">
+                                <h5 class="card-header">Tienda</h5>
+                                <div class="card-body d-flex justify-content-around">
+                                    @if (Model?.recompensas != null && Model.recompensas.Count > 0)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/Punk.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model?.recompensas != null && Model.recompensas.Count > 1)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/RedHead.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model?.recompensas != null && Model.recompensas.Count > 2)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/Coloured.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4 ">
+                @* Boton *@
+                <div class="row mt-3">
+                    <div class="boton-estadisticas">
+                        <div class=" d-grid ">
+                            <a asp-page="/Estadisticas" class="btn btn-danger btn-lg">Ver estadísticas</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="anuncios">
+                        <div class="tarjeta-anuncios card text-center">
+                            <h5 class="card-header">Publicar Anuncio</h5>
+                            <div class="card-body">
+                                <form method="post">
+                                    <div id="medallasContainer">
+                                        <label for="usuarioSelect" class="form-label">Empleado</label>
+                                        <select id="usuarioSelect" class="form-select w-100 mx-auto mb-4" name="usuarioSelect">
+                                            <option value="" disabled selected>Seleccione un empleado</option>
+                                            @if (Model?.usuariosTienda != null)
+                                            {
+                                                @foreach (var item in Model.usuariosTienda)
+                                                {
+                                                    <option value="@item.id_usuario">@item.nombre @item.apellido</option>
+                                                }
+                                            }
+                                        </select>
+                                        <label for="contenidoMedalla" class="form-label">Mensaje</label>
+                                        <textarea class="form-control" id="contenidoAnuncio" name="contenidoAnuncio" rows="3"></textarea>
+                                            <p id="mensaje" class="text-danger">@Model.mensaje1</p>
+                                            <div class="d-flex justify-content-center mt-3">
+                                                <button class="btn btn-danger mb-2" id="btnNAT" type="submit">Enviar anuncio</button>
+                                            </div>
+                                        @if (TempData["MensajeExito"] != null)
+                                            {
+                                                <div class="alert alert-success" role="alert">
+                                                    @TempData["MensajeExito"]
+                                                </div>
+                                            }
+                                        @if (TempData["MensajeFalta"] != null)
+                                            {
+                                                <div class="alert alert-danger" role="alert">
+                                                    @TempData["MensajeFalta"]
+                                                </div>
+                                            }
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

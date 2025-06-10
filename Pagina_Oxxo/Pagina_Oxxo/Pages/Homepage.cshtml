@@ -1,7 +1,7 @@
-﻿@page
+﻿@page "/Homepage"
 @model HomepageModel
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Homepage";
 }
 <div class="col-auto" style="padding-left: 85px;">
     <h1>@Model.mensaje</h1>
@@ -99,7 +99,7 @@
                             <div class="scrollable-div">
                                 @foreach (var item in Model.anuncios)
                                 {   
-                                        <div class="anuncio">
+                                        <div class="anuncio" style="border-radius: 10px;">
                                             <p>@item.fecha_anuncio</p>
                                             <p>@item.contenido</p>
                                         </div>

@@ -53,14 +53,28 @@
                 <div class="card-body" id="cardBodyNAT">
                     <form method="post">
                         <div id="medallasContainer">
+                            @if (TempData["MensajeExito"] != null)
+                                {
+                                    <div class="alert alert-success" role="alert">
+                                        @TempData["MensajeExito"]
+                                    </div>
+                                }
+                            @if (TempData["MensajeFalta"] != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @TempData["MensajeFalta"]
+                                    </div>
+                                }
                             <label for="medallaSelect" class="form-label">Medalla</label>
                             <select id="medallaSelect" class="form-select w-100 mx-auto mb-4" name="medallaSelect">
+                                <option value="" disabled selected>Seleccione una medalla</option>
                                 <option value="1">Buen Ejemplo</option>
                                 <option value="2">Líder Inspirador</option>
                                 <option value="3">Compañero Ideal</option>
                             </select>
-                            <label for="usuarioSelect" class="form-label">Compañero</label>
+                            <label for="usuarioSelect" class="form-label">Empleado</label>
                             <select id="usuarioSelect" class="form-select w-100 mx-auto mb-4" name="usuarioSelect">
+                                <option value="" disabled selected>Seleccione un empleado</option>
                                 @foreach (var item in Model.usuariosTienda)
                                 {
                                     <option value="@item.id_usuario">@item.nombre @item.apellido</option>
@@ -69,21 +83,23 @@
                             <label for="contenidoMedalla" class="form-label">Mensaje</label>
                             <textarea class="form-control" id="contenidoMedalla" name="contenidoMedalla" rows="3"></textarea>
                             <div class="d-flex justify-content-center mt-3">
-                                <button class="btn btn-primary" id="btnNAT" type="submit">Asignar medalla</button>
+                                <button class="btn btn-danger" id="btnNAT" type="submit">Asignar medalla</button>
                             </div>
+                            
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
         <div class="col-md-5">
             <div class="card text-center">
-                <h2 class="card-header" id="nat">Mis medallas</h2>
+                <h2 class="card-header" id="nat">Mural de reconocimientos</h2>
                 <div class="card-body" id="cardBodyNAT">                       
                     <div class="scrollable-div" id="medallasContainer">
                         @foreach (var item in Model.reconocimientos)
                         {   
-                            <div class="medallas">
+                            <div class="medallas" style="border-radius: 10px;">
                                 <div class="fila-superior">
                                     <img src="@Url.Content($"~/imagen/icon{item.id_icono}.png")" class="rounded-circle" alt="@item.id_icono" width="50px" height="50px"/>
                                     <div class="textoSuperior">

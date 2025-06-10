@@ -407,6 +407,7 @@ namespace Pagina_Oxxo.Model{
                     usuario.nombre = reader["nombre"].ToString();
                     usuario.apellido = reader["apellido"].ToString();
                     usuario.id_tienda = Convert.ToInt32(reader["id_tienda"]);
+                    usuario.id_rol = Convert.ToInt32(reader["id_rol"]);
                 }
             }
 
@@ -491,30 +492,23 @@ namespace Pagina_Oxxo.Model{
             conexion.Close();
         }
 
-        /*
-        public bool InsertarReconocimiento(int transmisor, string contenido, int id_icono, string receptor)
+        public void InsertarAnuncio(string contenido, int receptor)
         {
-            try
-            {
-                MySqlConnection conexion = GetConnection();
-                conexion.Open();
+            MySqlConnection conexion = GetConnection();
+            conexion.Open();
 
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO reconocimientos (transmisor, contenido, id_icono, id_usuario) VALUES (@transmisor, @contenido, @id_icono, @id_usuario)", conexion);
-                cmd.Parameters.AddWithValue("@transmisor", transmisor);
-                cmd.Parameters.AddWithValue("@contenido", contenido);
-                cmd.Parameters.AddWithValue("@id_icono", id_icono); 
-                cmd.Parameters.AddWithValue("@id_usuario", receptor);
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO anuncios (contenido, id_usuario) VALUES (@contenido, @id_usuario)", conexion);
+            cmd.Parameters.AddWithValue("@contenido", contenido);
+            cmd.Parameters.AddWithValue("@id_usuario", receptor);
 
-                cmd.ExecuteNonQuery();
-                conexion.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            cmd.ExecuteNonQuery();
+            conexion.Close();
+
         }
-        */
+
+        
+
+     
                         
 
         public IEnumerable<Turnos> getHorarios(DateTime semana, int id_usuario)
