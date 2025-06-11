@@ -37,7 +37,7 @@ public class HomepageAsesorModel : PageModel
 
         else
         {
-            user = _context.GetUserInfo(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
+            user = _context.GetUserInfo(userId.Value);
             top3 = _context.GetTop3();
             recompensas = _context.GetRecompensas();
             mensaje = "Bienvenido, " + HttpContext.Session.GetString("username");

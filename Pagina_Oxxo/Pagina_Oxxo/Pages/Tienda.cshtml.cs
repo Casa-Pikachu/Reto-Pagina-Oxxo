@@ -31,9 +31,9 @@ namespace Pagina_Oxxo.Pages
             }
             else
             {
-                id_usuario = 0;
-                monedasAmmount = 0;
                 Recompensas = new List<Recompensas>();
+                Response.Redirect("Index");
+                return;
             }
         }
 

@@ -62,14 +62,14 @@ namespace Pagina_Oxxo.Model{
         }
 
         // Funcion para obtener la informacion de un usuario en partcular
-        public Usuarios GetUserInfo(string nombre, string apellido)
+        public Usuarios GetUserInfo(int id_usuario)
         {
             Usuarios user = new Usuarios();
 
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\"", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
 
 
             using (var reader = cmd.ExecuteReader())
@@ -123,14 +123,14 @@ namespace Pagina_Oxxo.Model{
             return user;
         }
 
-        public List<Anuncios> GetAnuncios(string nombre, string apellido)
+        public List<Anuncios> GetAnuncios(int id_usuario)
         {
             List<Anuncios> ListaAnuncios = new List<Anuncios>();
 
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM ANUNCIOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM ANUNCIOS WHERE id_usuario = {id_usuario}", conexion);
 
             Anuncios anuncio;
 
