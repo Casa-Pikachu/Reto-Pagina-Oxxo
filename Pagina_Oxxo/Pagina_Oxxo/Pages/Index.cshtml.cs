@@ -37,8 +37,6 @@ public class IndexModel : PageModel
             Mensaje = "No deje los campos vacíos";
             return;
         }
-        HttpContext.Session.SetString("email", email);
-        HttpContext.Session.SetString("password", password);
 
         user = _context.CheckUsrId_Password(email, password);
 
@@ -54,14 +52,24 @@ public class IndexModel : PageModel
         {
             HttpContext.Session.SetString("nombre", user.nombre);
             HttpContext.Session.SetString("apellido", user.apellido);
-            HttpContext.Session.SetString("username", user.nombre + " " + user.apellido); 
+            HttpContext.Session.SetString("username", user.nombre + " " + user.apellido);
             HttpContext.Session.SetInt32("id_usuario", user.id_usuario);
-            HttpContext.Session.SetInt32("monedas", user.monedas);
-            HttpContext.Session.SetInt32("experiencia", user.experiencia);
-            HttpContext.Session.SetInt32("puntos", user.puntos);
-            HttpContext.Session.SetInt32("id_rol", user.id_rol);
             HttpContext.Session.SetInt32("id_tienda", user.id_tienda);
-            Response.Redirect("Homepage");
+            HttpContext.Session.SetInt32("id_rol", user.id_rol);
+
+            if (user.id_rol == 1)
+            {
+                Response.Redirect("/HomepageAsesor");
+            }
+            else if (user.id_rol == 2)
+            {
+                Response.Redirect("/Homepage");
+            }
+            else
+            {
+                Response.Redirect("/HomepageAsesor");
+
+            }
         }
 
     }
