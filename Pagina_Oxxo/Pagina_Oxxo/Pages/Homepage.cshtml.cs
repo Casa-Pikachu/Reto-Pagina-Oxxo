@@ -27,8 +27,8 @@ public class HomepageModel : PageModel
         int? userId = HttpContext.Session.GetInt32("id_usuario");
         if (userId != null)
         {
-            user = _context.GetUserInfo(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
-            anuncios = _context.GetAnuncios(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
+            user = _context.GetUserInfo(userId.Value);
+            anuncios = _context.GetAnuncios(userId.Value);
             top3 = _context.GetTop3();
             recompensas = _context.GetRecompensas();
             asesor = _context.GetAsesor(user.id_tienda);

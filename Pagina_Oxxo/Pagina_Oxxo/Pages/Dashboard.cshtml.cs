@@ -29,7 +29,8 @@ public class DashboardModel : PageModel
         }
         else
         {
-            id_usuario = 0;
+            Response.Redirect("Index");
+            return;
         }
 
         if (id != 0)

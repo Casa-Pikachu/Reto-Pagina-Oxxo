@@ -20,23 +20,30 @@
                             <div class="card-body">
                                 @* Query para obtener los primeros 3 lugares *@
                                 <div class="podio-inicio">
-                                    <div class="lugar-podio">
-                                        <p><strong>#1</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[0].nombre</strong></p>
-                                    </div>
-
-                                    <div class="lugar-podio d-flex align-items-center">
-                                        <p><strong>#2</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[1].nombre</strong></p>
-                                    </div>
-
-                                    <div class="lugar-podio d-flex align-items-center">
-                                        <p><strong>#3</strong></p>
-                                        <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
-                                        <p><strong>@Model.top3[2].nombre</strong></p>
-                                    </div>
+                                    @if (Model.top3 != null && Model.top3.Count > 0)
+                                    {
+                                        <div class="lugar-podio">
+                                            <p><strong>#1</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[0].nombre</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model.top3 != null && Model.top3.Count > 1)
+                                    {
+                                        <div class="lugar-podio d-flex align-items-center">
+                                            <p><strong>#2</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[1].nombre</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model.top3 != null && Model.top3.Count > 2)
+                                    {
+                                        <div class="lugar-podio d-flex align-items-center">
+                                            <p><strong>#3</strong></p>
+                                            <img class="img-usr-podio" src="~/imagen/imgUsuario.jpg" alt="Usuario" class="img-fluid">
+                                            <p><strong>@Model.top3[2].nombre</strong></p>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -49,7 +56,9 @@
                             <div class="card-body">
                                 <img class="img-moneda" src="~/imagen/moneda.png" alt="Moneda" class="img-fluid">
                                 <h3>
-                                    <strong>$@Model.user.monedas</strong>
+                                    <strong>
+                                        @(Model?.user != null ? $"${Model.user.monedas}" : "$0")
+                                    </strong>
                                 </h3>
                             </div>
                         </div>
@@ -64,20 +73,27 @@
                             <div class="tarjeta-inicio card text-center">
                                 <h5 class="card-header">Tienda</h5>
                                 <div class="card-body d-flex justify-content-around">
-                                    <div>
-                                        <img src="~/imagen/Tienda/Punk.png" alt="Item" class="img-recompensa img-fluid">
-                                        <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
-                                    </div>
-
-                                    <div>
-                                        <img src="~/imagen/Tienda/RedHead.png" alt="Item" class="img-recompensa img-fluid">
-                                        <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
-                                    </div>          
-
-                                    <div>
-                                        <img src="~/imagen/Tienda/Coloured.png" alt="Item" class="img-recompensa img-fluid">
-                                        <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
-                                    </div>          
+                                    @if (Model.recompensas != null && Model.recompensas.Count > 0)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/Punk.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[0].precio_recompensa</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model.recompensas != null && Model.recompensas.Count > 1)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/RedHead.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[1].precio_recompensa</strong></p>
+                                        </div>
+                                    }
+                                    @if (Model.recompensas != null && Model.recompensas.Count > 2)
+                                    {
+                                        <div>
+                                            <img src="~/imagen/Tienda/Coloured.png" alt="Item" class="img-recompensa img-fluid">
+                                            <p class="mt-2"><strong>$@Model.recompensas[2].precio_recompensa</strong></p>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </a>
@@ -94,15 +110,18 @@
                     <div class="tarjeta-anuncios card text-center">
                         <h5 class="card-header">Anuncios de tu Asesor de Tienda</h5>
                         <div class="card-body">
-                            <p><strong>@Model.asesor.nombre</strong></p>
-                            <p>Tienda @Model.textTienda_Asesor</p>                            
+                            <p><strong>@(Model?.asesor?.nombre ?? "")</strong></p>
+                            <p>Tienda @(Model?.textTienda_Asesor ?? "")</p>                            
                             <div class="scrollable-div">
-                                @foreach (var item in Model.anuncios)
-                                {   
+                                @if (Model.anuncios != null)
+                                {
+                                    foreach (var item in Model.anuncios)
+                                    {   
                                         <div class="anuncio" style="border-radius: 10px;">
                                             <p>@item.fecha_anuncio</p>
                                             <p>@item.contenido</p>
                                         </div>
+                                    }
                                 }
                             </div>
                         </div>

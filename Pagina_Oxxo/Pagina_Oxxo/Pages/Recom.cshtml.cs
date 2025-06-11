@@ -25,8 +25,12 @@ public class RecomModel : PageModel
         usuariosTienda = _context.GetAllUsersByTienda(idTienda, HttpContext.Session.GetInt32("id_usuario") ?? 0);
         reconocimientos = _context.GetReconocimientos(HttpContext.Session.GetString("nombre"), HttpContext.Session.GetString("apellido"));
 
-        
-
+        if(usuariosTienda.Count == 0)
+        {
+            TempData["MensajeFalta"] = "No hay usuarios disponibles para enviar reconocimientos.";
+            Response.Redirect("Index");
+            return;
+        }
     }
 
     public IActionResult OnPost()
