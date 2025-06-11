@@ -220,6 +220,7 @@ namespace Pagina_Oxxo.Model{
 
 
         //Obtener una lista para obtener los lugares del 4to en adelante
+        //Magda
         public List<Podios> GetElse()
         {
             List<Podios> PodioUsuarios = new List<Podios>();
@@ -231,28 +232,16 @@ namespace Pagina_Oxxo.Model{
 
 
             string query = @"
-                    SELECT nombre, apellido, puntaje
-                    FROM (
-                        SELECT 
-                            u.nombre, 
-                            u.apellido, 
-                            r.puntaje,
-                            ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
-                        FROM usuarios u
-                        JOIN ranking r ON u.id_usuario = r.id_usuario
-                    ) AS sub  
-                    WHERE posicion >= 4;";
-
-
-            /*se realiza una consulta sql 
-            se seleccionan los parametros de las tablas usuarios y ranking, para esto es necesario
-            unirlas con JOIN por medio de lo que tienen su PK y FK, que es el id de usuario. 
-
-            para obtener la posicion se hizo un row_number que saca el numero de fila una vez 
-            que se ordena de mayor a menor. Todo esto queda dentro de una subconsulta 
-            en la que luego se puede hacer la consulta en la que se elige el rango que se desea. 
-            */
-
+                    SELECT nombre, apellido, puntos
+                FROM  (
+                    SELECT 
+                        nombre, 
+                        apellido, 
+                        puntos,
+                        ROW_NUMBER() OVER (ORDER BY puntos DESC) AS posicion
+                        from usuarios
+   
+                ) AS sub WHERE posicion >= 4;";
 
             MySqlCommand cmd = new MySqlCommand(query, conexion);
 
@@ -261,17 +250,17 @@ namespace Pagina_Oxxo.Model{
             {
                 while (reader.Read())
                 {
-                    //nuevo objeto para agregar los valores 
+               
                     Podios usrpod = new Podios
                     {
                         nombre = reader["nombre"].ToString(),
                         apellido = reader["apellido"].ToString(),
-                        puntaje = Convert.ToInt32(reader["puntaje"])
+                        puntaje = Convert.ToInt32(reader["puntos"])
 
                     };
 
                     PodioUsuarios.Add(usrpod);
-                    //se le agrega
+               
 
                 }
             }
@@ -282,52 +271,41 @@ namespace Pagina_Oxxo.Model{
         }
 
 
-        //Obtener el medallero (cada lugar individual para ponerlo en las tarjetas)
+        //Magda
         public Podios GetLugarMedalla(int posicion)
         {
 
-            //no es lista asi que pues nada mas se inicia como null
             Podios resultado = null;
 
             MySqlConnection conexion = GetConnection();
             conexion.Open();
-            //$ porque salia error 
+        
             string query = $@"
-                            SELECT nombre, apellido, puntaje
-                FROM (
+
+            SELECT nombre, apellido, puntos
+                FROM  (
                     SELECT 
-                        u.nombre, 
-                        u.apellido, 
-                        r.puntaje,
-                        ROW_NUMBER() OVER (ORDER BY r.puntaje DESC) AS posicion
-                    FROM usuarios u
-                    JOIN ranking r ON u.id_usuario = r.id_usuario
-                ) AS sub  
-                WHERE posicion = {posicion};";
+                        nombre, 
+                        apellido, 
+                        puntos,
+                        ROW_NUMBER() OVER (ORDER BY puntos DESC) AS posicion
+                        from usuarios
+   
+                ) AS sub WHERE posicion = {posicion}; ";
 
 
-            /*se realiza una consulta sql, muy parecida a la anterior con unos cambios.
-            se seleccionan los parametros de las tablas usuarios y ranking, para esto es necesario
-            unirlas con JOIN por medio de lo que tienen su PK y FK, que es el id de usuario. 
-
-            para obtener la posicion se hizo un row_number que saca el numero de fila una vez 
-            que se ordena de mayor a menor. Todo esto queda dentro de una subconsulta 
-            en la que luego se puede hacer la consulta se pone la variable que se desea. Por ejemplo 
-            ganador se usa la posicion 1.  
-            */
-
+            
             MySqlCommand cmd = new MySqlCommand(query, conexion);
 
             using (var reader = cmd.ExecuteReader())
             {
                 if (reader.Read())
 
-                    //objeto para agregar valores
                     resultado = new Podios
                     {
                         nombre = reader["nombre"].ToString(),
                         apellido = reader["apellido"].ToString(),
-                        puntaje = Convert.ToInt32(reader["puntaje"])
+                        puntaje = Convert.ToInt32(reader["puntos"])
 
                     };
             }
