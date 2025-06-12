@@ -65,7 +65,11 @@ namespace Pagina_Oxxo.Model{
             conexion.Open();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\"", conexion);
+=======
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM usuarios WHERE id_usuario = {id_usuario}", conexion);
+>>>>>>> Stashed changes
 =======
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM usuarios WHERE id_usuario = {id_usuario}", conexion);
 >>>>>>> Stashed changes
@@ -130,7 +134,11 @@ namespace Pagina_Oxxo.Model{
             conexion.Open();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM ANUNCIOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+=======
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM anuncios WHERE id_usuario = {id_usuario}", conexion);
+>>>>>>> Stashed changes
 =======
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM anuncios WHERE id_usuario = {id_usuario}", conexion);
 >>>>>>> Stashed changes
@@ -226,7 +234,11 @@ namespace Pagina_Oxxo.Model{
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //Obtener una lista para obtener los lugares del 4to en adelante
+=======
+       //Magda
+>>>>>>> Stashed changes
 =======
        //Magda
 >>>>>>> Stashed changes
