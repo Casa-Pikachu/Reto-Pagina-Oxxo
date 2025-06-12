@@ -11,12 +11,7 @@ namespace Pagina_Oxxo.Model{
 
         public DataBaseContext()
         {
-            // DB local Bruno
-            ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=T3cmylif343v3r!";
-            //ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;password=GhostJB12;";
-
-           // ConnectionString = "Server=127.0.0.1;Port=3306;Database=reto_oxxo;Uid=root;";
-
+            ConnectionString = "Server=mysql-370e2f78-tec-f8a4.b.aivencloud.com;Port=27566;Database=reto_oxxo;Uid=avnadmin;Password=AVNS_2M0v78xMV-H3ZdoHrdY;SslMode=Required;";
         }
 
         private MySqlConnection GetConnection()
@@ -32,7 +27,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM USUARIOS", conexion);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM usuarios", conexion);
 
             Usuarios usr1;
 
@@ -69,7 +64,11 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
+<<<<<<< Updated upstream
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\"", conexion);
+=======
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM usuarios WHERE id_usuario = {id_usuario}", conexion);
+>>>>>>> Stashed changes
 
 
             using (var reader = cmd.ExecuteReader())
@@ -100,7 +99,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_rol = 1", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM usuarios WHERE id_tienda = {id_tienda} AND id_rol = 1", conexion);
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -130,7 +129,11 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
+<<<<<<< Updated upstream
             MySqlCommand cmd = new MySqlCommand($"SELECT * FROM ANUNCIOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+=======
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM anuncios WHERE id_usuario = {id_usuario}", conexion);
+>>>>>>> Stashed changes
 
             Anuncios anuncio;
 
@@ -160,7 +163,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM USUARIOS ORDER BY experiencia DESC LIMIT 3", conexion);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM usuarios ORDER BY experiencia DESC LIMIT 3", conexion);
 
             Usuarios usr1;
 
@@ -197,7 +200,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM RECOMPENSAS LIMIT 3", conexion);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM recompensas LIMIT 3", conexion);
 
             Recompensas item;
 
@@ -222,7 +225,11 @@ namespace Pagina_Oxxo.Model{
         }
 
 
+<<<<<<< Updated upstream
         //Obtener una lista para obtener los lugares del 4to en adelante
+=======
+       //Magda
+>>>>>>> Stashed changes
         public List<Podios> GetElse()
         {
             List<Podios> PodioUsuarios = new List<Podios>();
@@ -347,7 +354,10 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand rk = new MySqlCommand($"SELECT fecha_puntaje FROM Ranking where id_usuario = {id_usuario_}", conexion);
+            string query = "SELECT fecha_puntaje FROM ranking WHERE id_usuario = @id";
+            MySqlCommand rk = new MySqlCommand(query, conexion);
+            rk.Parameters.AddWithValue("@id", id_usuario_);
+
 
             using (var reader = rk.ExecuteReader())
             {
@@ -372,7 +382,7 @@ namespace Pagina_Oxxo.Model{
 
 
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM USUARIOS WHERE id_usuario = {id_usuario}", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT id_usuario, nombre, apellido, monedas, experiencia, puntos FROM usuarios WHERE id_usuario = {id_usuario}", conexion);
 
 
             using (var reader = cmd.ExecuteReader())
@@ -402,8 +412,10 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE correo = \"{usuario_correo}\" AND contrasena = \"{usuario_password}\"", conexion);
-
+            string query = "SELECT * FROM usuarios WHERE correo = @correo AND contrasena = @contrasena";
+            MySqlCommand cmd = new MySqlCommand(query, conexion);
+            cmd.Parameters.AddWithValue("@correo", usuario_correo);
+            cmd.Parameters.AddWithValue("@contrasena", usuario_password);
             using (var reader = cmd.ExecuteReader())
             {
                 if (reader.Read())
@@ -431,7 +443,16 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM RECONOCIMIENTOS WHERE id_usuario = (SELECT id_usuario FROM USUARIOS WHERE nombre = \"{nombre}\" AND apellido = \"{apellido}\")", conexion);
+            string query = @"SELECT * FROM reconocimientos 
+                 WHERE id_usuario = (
+                     SELECT id_usuario FROM usuarios 
+                     WHERE nombre = @nombre AND apellido = @apellido
+                 )";
+
+            MySqlCommand cmd = new MySqlCommand(query, conexion);
+            cmd.Parameters.AddWithValue("@nombre", nombre);
+            cmd.Parameters.AddWithValue("@apellido", apellido);
+
 
             Reconocimientos reconocimiento;
 
@@ -463,7 +484,7 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM USUARIOS WHERE id_tienda = {id_tienda} AND id_usuario != {id_usuario}", conexion);
+            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM usuarios WHERE id_tienda = {id_tienda} AND id_usuario != {id_usuario}", conexion);
 
             Usuarios usr1;
 
@@ -609,7 +630,7 @@ namespace Pagina_Oxxo.Model{
             List<Recompensas> ListaItems = new List<Recompensas>();
             MySqlConnection conexion = GetConnection();
             conexion.Open();
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM RECOMPENSAS", conexion);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM recompensas", conexion);
             Recompensas item;
             using (var reader = cmd.ExecuteReader())
             {
@@ -760,7 +781,10 @@ namespace Pagina_Oxxo.Model{
             MySqlConnection conexion = GetConnection();
             conexion.Open();
 
-            MySqlCommand cmd = new MySqlCommand($"SELECT * FROM INSTRUCCIONES WHERE titulo_instruccion = \"{titulo}\"", conexion);
+            string query = "SELECT * FROM instrucciones WHERE titulo_instruccion = @titulo";
+            MySqlCommand cmd = new MySqlCommand(query, conexion);
+            cmd.Parameters.AddWithValue("@titulo", titulo);
+
 
             Instrucciones instruccion;
 
